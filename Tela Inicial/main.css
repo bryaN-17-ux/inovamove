@@ -5,21 +5,22 @@
     box-sizing: border-box;
 }
 
-/* VARIÁVEIS (padronização de cores) */
+/* VARIÁVEIS (Paleta neutra focada em alto contraste e acessibilidade) */
 :root {
-    --azul-principal: #1e6fd9;
-    --azul-claro: #4da3ff;
-    --azul-fundo: #f4f8ff;
-    --branco: #ffffff;
-    --cinza-texto: #555;
-    --sombra: 0 4px 15px rgba(0, 0, 0, 0.1);
+    --cor-principal: #222222; /* Cinza escuro quase preto */
+    --cor-secundaria: #4A4A4A; /* Cinza médio para textos de apoio */
+    --cor-fundo: #F4F4F4; /* Fundo claro para não cansar a vista */
+    --branco: #FFFFFF;
+    --cinza-texto: #333333;
+    --sombra: 0 6px 16px rgba(0, 0, 0, 0.08);
+    --borda-foco: #000000;
 }
 
 /* BODY */
 body {
     font-family: 'Inter', sans-serif;
-    background-color: var(--azul-fundo);
-    color: #222;
+    background-color: var(--cor-fundo);
+    color: var(--cinza-texto);
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -27,32 +28,36 @@ body {
 
 /* HEADER */
 .header {
-    background: linear-gradient(135deg, var(--azul-principal), var(--azul-claro));
+    background-color: var(--cor-principal);
     color: var(--branco);
     text-align: center;
-    padding: 25px 15px;
-
+    padding: 30px 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 /* LOGO */
 .logo {
-    width: 180px;
-    max-width: 90%;
-    margin-bottom: 10px;
+    height: 65px; /* Usar altura fixa evita que a logo fique distorcida */
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    margin-bottom: 15px;
 }
 
 /* TÍTULO */
 .titulo h1 {
-    font-size: 1.8rem;
+    font-size: 2rem;
     font-weight: 700;
+    letter-spacing: -0.5px;
 }
 
 .titulo p {
-    font-size: 1rem;
+    font-size: 1.1rem;
     opacity: 0.9;
+    margin-top: 4px;
 }
 
 /* CONTAINER */
@@ -61,72 +66,83 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    padding: 30px 20px;
 }
 
 /* MENU (CARDS) */
 .menu {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: 24px; /* Espaçamento maior para evitar toques acidentais em celulares */
     width: 100%;
-    max-width: 420px;
+    max-width: 500px; 
 }
 
-/* CARD */
+/* CARD (Área de toque ampliada e conteúdo centralizado) */
 .card {
     background-color: var(--branco);
-    border: none;
+    border: 2px solid transparent;
     border-radius: 16px;
-    padding: 20px;
-    text-align: left;
+    padding: 24px 20px;
+    text-align: center; /* Centralizado facilita a leitura e identificação rápida */
     cursor: pointer;
     box-shadow: var(--sombra);
-    transition: all 0.3s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 130px; /* Garante uma área de toque confortável para qualquer dedo */
 }
 
 /* ÍCONE */
 .icon {
-    font-size: 2rem;
+    font-size: 2.5rem; /* Ícones maiores para melhor reconhecimento visual */
     display: block;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
 
 /* TÍTULO DO CARD */
 .card h2 {
-    font-size: 1.3rem;
-    margin-bottom: 5px;
-    color: var(--azul-principal);
+    font-size: 1.4rem;
+    margin-bottom: 8px;
+    color: var(--cor-principal);
+    font-weight: 700;
 }
 
 /* TEXTO */
 .card p {
-    font-size: 0.95rem;
-    color: var(--cinza-texto);
+    font-size: 1.05rem;
+    color: var(--cor-secundaria);
+    line-height: 1.4;
 }
 
 /* HOVER */
 .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
 }
 
-/* FOCO (ACESSIBILIDADE) */
-.card:focus {
-    outline: 3px solid var(--azul-principal);
+/* FOCO (Essencial para navegação por teclado e leitores de tela) */
+.card:focus, .card:active {
+    outline: none;
+    border-color: var(--borda-foco);
+    box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.15);
 }
 
 /* RODAPÉ */
 .footer {
+    background-color: var(--cor-principal); /* Conecta visualmente com o Header */
+    color: var(--branco);
     text-align: center;
-    padding: 15px;
-    font-size: 0.9rem;
-    color: var(--cinza-texto);
+    padding: 20px;
+    font-size: 1rem;
+    font-weight: 600;
 }
 
 /* RESPONSIVIDADE */
 @media (min-width: 600px) {
     .menu {
         grid-template-columns: 1fr 1fr;
+        max-width: 800px;
     }
 }
