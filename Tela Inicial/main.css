@@ -1,0 +1,132 @@
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* VARIÁVEIS (padronização de cores) */
+:root {
+    --azul-principal: #1e6fd9;
+    --azul-claro: #4da3ff;
+    --azul-fundo: #f4f8ff;
+    --branco: #ffffff;
+    --cinza-texto: #555;
+    --sombra: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* BODY */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--azul-fundo);
+    color: #222;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* HEADER */
+.header {
+    background: linear-gradient(135deg, var(--azul-principal), var(--azul-claro));
+    color: var(--branco);
+    text-align: center;
+    padding: 25px 15px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* LOGO */
+.logo {
+    width: 180px;
+    max-width: 90%;
+    margin-bottom: 10px;
+}
+
+/* TÍTULO */
+.titulo h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.titulo p {
+    font-size: 1rem;
+    opacity: 0.9;
+}
+
+/* CONTAINER */
+.container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* MENU (CARDS) */
+.menu {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    width: 100%;
+    max-width: 420px;
+}
+
+/* CARD */
+.card {
+    background-color: var(--branco);
+    border: none;
+    border-radius: 16px;
+    padding: 20px;
+    text-align: left;
+    cursor: pointer;
+    box-shadow: var(--sombra);
+    transition: all 0.3s ease;
+}
+
+/* ÍCONE */
+.icon {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+/* TÍTULO DO CARD */
+.card h2 {
+    font-size: 1.3rem;
+    margin-bottom: 5px;
+    color: var(--azul-principal);
+}
+
+/* TEXTO */
+.card p {
+    font-size: 0.95rem;
+    color: var(--cinza-texto);
+}
+
+/* HOVER */
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* FOCO (ACESSIBILIDADE) */
+.card:focus {
+    outline: 3px solid var(--azul-principal);
+}
+
+/* RODAPÉ */
+.footer {
+    text-align: center;
+    padding: 15px;
+    font-size: 0.9rem;
+    color: var(--cinza-texto);
+}
+
+/* RESPONSIVIDADE */
+@media (min-width: 600px) {
+    .menu {
+        grid-template-columns: 1fr 1fr;
+    }
+}
