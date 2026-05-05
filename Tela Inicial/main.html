@@ -8,58 +8,84 @@
     <!-- CSS -->
     <link rel="stylesheet" href="main.css">
 
-    <!-- Fonte moderna -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Fontes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
     <!-- HEADER -->
     <header class="header">
-        <img src="logo.png" alt="Logo InovaMove" class="logo">
+        <div class="logo-wrapper">
+            <img src="logo.png" alt="Logo InovaMove" class="logo">
+        </div>
 
         <div class="titulo">
             <h1>InovaMove</h1>
             <p>Mobilidade inclusiva para todos</p>
+        </div>
+
+        <div class="status-pill" aria-label="Sistema ativo">
+            <span class="status-dot" aria-hidden="true"></span>
+            Sistema ativo
         </div>
     </header>
 
     <!-- CONTEÚDO PRINCIPAL -->
     <main class="container">
 
-        <section class="menu">
+        <nav class="menu" aria-label="Menu principal">
 
-            <button onclick="irPara('../Mapa e Acompanhamento/mapa.html')" class="card">
-                <span class="icon">🗺️</span>
+            <button onclick="irPara('../Mapa e Acompanhamento/mapa.html')"
+                    class="card"
+                    aria-label="Ver ônibus em tempo real">
+                <span class="icon blue" aria-hidden="true">🗺️</span>
+                <span class="card-label">Rastrear</span>
                 <h2>Ver ônibus</h2>
                 <p>Acompanhe em tempo real</p>
+                <span class="card-arrow" aria-hidden="true">→</span>
             </button>
 
-            <button onclick="irPara('../Solicitação de ônibus/solicitacao.html')" class="card">
-                <span class="icon">🚌</span>
+            <button onclick="irPara('../Solicitação de ônibus/solicitacao.html')"
+                    class="card"
+                    aria-label="Pedir ônibus e avisar motorista">
+                <span class="icon cyan" aria-hidden="true">🚌</span>
+                <span class="card-label">Solicitar</span>
                 <h2>Pedir ônibus</h2>
-                <p>Avise o motorista</p>
+                <p>Avise o motorista com antecedência</p>
+                <span class="card-arrow" aria-hidden="true">→</span>
             </button>
 
-            <button onclick="irPara('../Configuração de acessibilidade/acessibilidade.html')" class="card">
-                <span class="icon">♿</span>
+            <button onclick="irPara('../Configuração de acessibilidade/acessibilidade.html')"
+                    class="card"
+                    aria-label="Configurar acessibilidade">
+                <span class="icon teal" aria-hidden="true">♿</span>
+                <span class="card-label">Preferências</span>
                 <h2>Acessibilidade</h2>
                 <p>Personalize sua experiência</p>
+                <span class="card-arrow" aria-hidden="true">→</span>
             </button>
 
-            <button onclick="irPara('../Feedback/feedback.html')" class="card">
-                <span class="icon">⭐</span>
+            <button onclick="irPara('../Feedback/feedback.html')"
+                    class="card"
+                    aria-label="Avaliar o serviço">
+                <span class="icon amber" aria-hidden="true">⭐</span>
+                <span class="card-label">Feedback</span>
                 <h2>Avaliar</h2>
-                <p>Deixe sua opinião</p>
+                <p>Deixe sua opinião sobre o serviço</p>
+                <span class="card-arrow" aria-hidden="true">→</span>
             </button>
 
-        </section>
+        </nav>
 
     </main>
 
     <!-- RODAPÉ -->
     <footer class="footer">
-        <p>© 2026 InovaMove • Projeto UVV</p>
+        <div class="footer-divider"></div>
+        <p>© 2026 InovaMove • <span>Projeto UVV</span></p>
     </footer>
 
     <!-- JS -->
