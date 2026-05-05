@@ -3,134 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="InovaMove - Mobilidade inclusiva para todos. Acompanhe ônibus em tempo real, solicite transporte acessível e personalize sua experiência.">
-    <title>InovaMove - Mobilidade Inclusiva</title>
+    <title>InovaMove</title>
+<!-- CSS -->
+<link rel="stylesheet" href="main.css">
 
-    <!-- SEO e Performance -->
-    <link rel="canonical" href=".">
-    <link rel="icon" type="image/png" href="logo.png">
-    
-    <!-- CSS -->
-    <link rel="stylesheet" href="main.css">
+<!-- Fontes -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 
-    <!-- Fontes otimizadas -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
-
 <body>
-    <!-- SKIP LINK (Acessibilidade) -->
-    <a href="#menu-principal" class="skip-link">Ir para menu principal</a>
+<!-- HEADER -->
+<header class="header">
 
-    <!-- HEADER -->
-    <header class="header" role="banner">
-        <div class="logo-wrapper" role="img" aria-label="Logo InovaMove">
-            <img src="logo.png" alt="Logo InovaMove" class="logo" loading="lazy">
-        </div>
-
-        <div class="titulo">
-            <h1>InovaMove</h1>
-            <p>Mobilidade inclusiva para todos</p>
-        </div>
-
-        <div class="status-pill" aria-live="polite" id="statusSistema">
-            <span class="status-dot" aria-hidden="true"></span>
-            <span id="statusTexto">Sistema ativo</span>
-        </div>
-    </header>
-
-    <!-- CONTEÚDO PRINCIPAL -->
-    <main class="container" id="conteudoPrincipal">
-        <nav class="menu" id="menu-principal" aria-label="Menu principal de navegação">
-            
-            <!-- Card 1: Ver Ônibus -->
-            <button class="card" 
-                    data-pagina="../Mapa e Acompanhamento/mapa.html"
-                    data-nome="Mapa em tempo real"
-                    data-acao="rastrear"
-                    aria-label="Acessar mapa para ver ônibus em tempo real (atalho: 1)"
-                    accesskey="1">
-                <span class="icon blue" aria-hidden="true">🗺️</span>
-                <span class="card-label">Rastrear</span>
-                <h2>Ver ônibus</h2>
-                <p>Acompanhe a localização em tempo real dos ônibus acessíveis</p>
-                <span class="card-arrow" aria-hidden="true">→</span>
-            </button>
-
-            <!-- Card 2: Pedir Ônibus -->
-            <button class="card" 
-                    data-pagina="../Solicitação de ônibus/solicitacao.html"
-                    data-nome="Solicitação de ônibus"
-                    data-acao="solicitar"
-                    aria-label="Solicitar ônibus acessível e avisar motorista (atalho: 2)"
-                    accesskey="2">
-                <span class="icon cyan" aria-hidden="true">🚌</span>
-                <span class="card-label">Solicitar</span>
-                <h2>Pedir ônibus</h2>
-                <p>Notifique o motorista com antecedência da sua necessidade especial</p>
-                <span class="card-arrow" aria-hidden="true">→</span>
-            </button>
-
-            <!-- Card 3: Acessibilidade -->
-            <button class="card" 
-                    data-pagina="../Configuração de acessibilidade/acessibilidade.html"
-                    data-nome="Configurações de acessibilidade"
-                    data-acao="configurar"
-                    aria-label="Configurar preferências de acessibilidade (atalho: 3)"
-                    accesskey="3">
-                <span class="icon teal" aria-hidden="true">♿</span>
-                <span class="card-label">Preferências</span>
-                <h2>Acessibilidade</h2>
-                <p>Personalize contraste, tamanho de fonte e navegação por teclado</p>
-                <span class="card-arrow" aria-hidden="true">→</span>
-            </button>
-
-            <!-- Card 4: Feedback -->
-            <button class="card" 
-                    data-pagina="../Feedback/feedback.html"
-                    data-nome="Feedback e avaliação"
-                    data-acao="avaliar"
-                    aria-label="Enviar feedback e avaliar o serviço (atalho: 4)"
-                    accesskey="4">
-                <span class="icon amber" aria-hidden="true">⭐</span>
-                <span class="card-label">Feedback</span>
-                <h2>Avaliar</h2>
-                <p>Compartilhe sua experiência para melhorarmos o serviço</p>
-                <span class="card-arrow" aria-hidden="true">→</span>
-            </button>
-
-        </nav>
-    </main>
-
-    <!-- CONTROLES DE ACESSIBILIDADE (Flutuante) -->
-    <div id="controlesAcessibilidade" class="acessibilidade-controles" aria-label="Controles de acessibilidade">
-        <button id="aumentarFonte" aria-label="Aumentar fonte (Ctrl +)" title="Ctrl +">+</button>
-        <button id="diminuirFonte" aria-label="Diminuir fonte (Ctrl -)" title="Ctrl + -"></button>
-        <button id="altoContraste" aria-label="Alto contraste" title="Ativar alto contraste">HC</button>
-        <button id="resetAcessibilidade" aria-label="Resetar configurações" title="Resetar tudo">R</button>
+    <div class="logo-wrapper">
+        <img src="logo.png" alt="Logo InovaMove" class="logo">
     </div>
 
-    <!-- TOAST DE NOTIFICAÇÃO -->
-    <div id="toast" class="toast" aria-live="assertive" aria-atomic="true" role="status">
-        <span id="toastMensagem"></span>
+    <div class="titulo">
+        <h1>InovaMove</h1>
+        <p>Mobilidade inclusiva para todos</p>
     </div>
 
-    <!-- LOADING OVERLAY -->
-    <div id="loadingOverlay" class="loading-overlay" aria-label="Carregando...">
-        <div class="loading-spinner"></div>
+    <div class="status-pill" aria-label="Sistema ativo">
+        <span class="status-dot" aria-hidden="true"></span>
+        Sistema ativo
     </div>
 
-    <!-- RODAPÉ -->
-    <footer class="footer" role="contentinfo">
-        <div class="footer-divider"></div>
-        <p>© 2026 InovaMove • <span>Projeto UVV</span> | 
-           <kbd>1-4</kbd> Atalhos • 
-           <kbd>Ctrl + / -</kbd> Fonte • 
-           <kbd>F10</kbd> Acessibilidade</p>
-    </footer>
+</header>
 
-    <!-- JS -->
-    <script src="main.js"></script>
+<!-- CONTEÚDO PRINCIPAL -->
+<main class="container">
+
+    <nav class="menu" aria-label="Menu principal">
+
+        <button onclick="irPara('../Mapa e Acompanhamento/mapa.html')"
+                class="card"
+                aria-label="Ver ônibus em tempo real">
+            <span class="icon blue" aria-hidden="true">🗺️</span>
+            <span class="card-label">Rastrear</span>
+            <h2>Ver ônibus</h2>
+            <p>Acompanhe em tempo real</p>
+            <span class="card-arrow" aria-hidden="true">→</span>
+        </button>
+
+        <button onclick="irPara('../Solicitação de ônibus/solicitacao.html')"
+                class="card"
+                aria-label="Pedir ônibus e avisar motorista">
+            <span class="icon cyan" aria-hidden="true">🚌</span>
+            <span class="card-label">Solicitar</span>
+            <h2>Pedir ônibus</h2>
+            <p>Avise o motorista com antecedência</p>
+            <span class="card-arrow" aria-hidden="true">→</span>
+        </button>
+
+        <button onclick="irPara('../Configuração de acessibilidade/acessibilidade.html')"
+                class="card"
+                aria-label="Configurar acessibilidade">
+            <span class="icon teal" aria-hidden="true">♿</span>
+            <span class="card-label">Preferências</span>
+            <h2>Acessibilidade</h2>
+            <p>Personalize sua experiência</p>
+            <span class="card-arrow" aria-hidden="true">→</span>
+        </button>
+
+        <button onclick="irPara('../Feedback/feedback.html')"
+                class="card"
+                aria-label="Avaliar o serviço">
+            <span class="icon amber" aria-hidden="true">⭐</span>
+            <span class="card-label">Feedback</span>
+            <h2>Avaliar</h2>
+            <p>Deixe sua opinião sobre o serviço</p>
+            <span class="card-arrow" aria-hidden="true">→</span>
+        </button>
+
+    </nav>
+
+</main>
+
+<!-- RODAPÉ -->
+<footer class="footer">
+    <div class="footer-divider"></div>
+    <p>© 2026 InovaMove • <span>Projeto UVV</span></p>
+</footer>
+
+<!-- JS -->
+<script src="main.js"></script>
+
 </body>
 </html>
