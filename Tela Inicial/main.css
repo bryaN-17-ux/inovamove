@@ -21,6 +21,18 @@
     --sombra-card:   0 2px 24px rgba(0, 0, 0, 0.18);
     --radius-card:   22px;
     --radius-icon:   16px;
+
+    /* NOVAS VARIÁVEIS */
+    --toast-bg:           rgba(11, 31, 75, 0.95);
+    --toast-success:      rgba(20, 184, 166, 0.20);
+    --toast-error:        rgba(239, 68, 68, 0.25);
+    --toast-info:         rgba(30, 111, 217, 0.20);
+    --loading-bg:         rgba(11, 31, 75, 0.92);
+    --skip-link-bg:       rgba(30, 111, 217, 0.95);
+    --acessibilidade-bg:  rgba(255, 255, 255, 0.08);
+    --acessibilidade-hover: rgba(255, 255, 255, 0.15);
+    --alto-contraste-bg:  #000;
+    --alto-contraste-text: #fff;
 }
 
 /* BODY */
@@ -33,6 +45,19 @@ body {
     min-height: 100vh;
     position: relative;
     overflow-x: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ALTO CONTRASTE */
+body.alto-contraste {
+    background-color: var(--alto-contraste-bg) !important;
+    color: var(--alto-contraste-text) !important;
+}
+
+body.alto-contraste .card,
+body.alto-contraste .card-bg {
+    background: rgba(255,255,255,0.15) !important;
+    border-color: #fff !important;
 }
 
 /* GRADE DE FUNDO */
@@ -46,6 +71,11 @@ body::before {
     background-size: 44px 44px;
     pointer-events: none;
     z-index: 0;
+    transition: opacity 0.3s ease;
+}
+
+body.alto-contraste::before {
+    opacity: 0.3;
 }
 
 /* BRILHO RADIAL DE TOPO */
@@ -61,6 +91,28 @@ body::after {
     background: radial-gradient(circle, rgba(30,111,217,0.22) 0%, transparent 68%);
     pointer-events: none;
     z-index: 0;
+}
+
+/* SKIP LINK */
+.skip-link {
+    position: fixed;
+    top: 20px;
+    left: -100%;
+    background: var(--skip-link-bg);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    z-index: 1000;
+    transition: left 0.3s ease;
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.skip-link:focus,
+.skip-link.visivel {
+    left: 20px;
 }
 
 /* HEADER */
@@ -183,6 +235,19 @@ body::after {
     gap: 16px;
     width: 100%;
     max-width: 520px;
+}
+
+/* ESTADO NAVEGANDO */
+.card.navegando {
+    pointer-events: none;
+    opacity: 0.7;
+    animation: card-navegando 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes card-navegando {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(0.95); opacity: 0; }
 }
 
 /* CARD */
@@ -309,6 +374,133 @@ body::after {
     transform: scale(0.97);
 }
 
+/* CONTROLES DE ACESSIBILIDADE */
+.acessibilidade-controles {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: var(--acessibilidade-bg);
+    backdrop-filter: blur(20px);
+    padding: 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+    z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.acessibilidade-controles.visivel {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.acessibilidade-controles button {
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.1);
+    color: white;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.acessibilidade-controles button:hover,
+.acessibilidade-controles button:focus {
+    background: var(--acessibilidade-hover);
+    transform: scale(1.05);
+    box-shadow: 0 4px 16px rgba(255,255,255,0.2);
+}
+
+#acessibilidade-controles button:focus-visible {
+    outline: 2px solid var(--azul-claro);
+    outline-offset: 2px;
+}
+
+/* TOAST NOTIFICATION */
+.toast {
+    position: fixed;
+    top: 24px;
+    right: -400px;
+    min-width: 320px;
+    max-width: 400px;
+    background: var(--toast-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 16px;
+    padding: 16px 20px;
+    color: white;
+    font-weight: 500;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    z-index: 1000;
+    transform: translateX(20px);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.toast--success { border-left: 4px solid #14b8a6; }
+.toast--error { border-left: 4px solid #ef4444; }
+.toast--info { border-left: 4px solid var(--azul-claro); }
+
+.toast--visible {
+    right: 24px;
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.toast--visible.toast--success {
+    background: linear-gradient(135deg, var(--toast-success), transparent);
+}
+
+.toast--visible.toast--error {
+    background: linear-gradient(135deg, var(--toast-error), transparent);
+}
+
+/* LOADING OVERLAY */
+.loading-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--loading-bg);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 999;
+    transition: all 0.3s ease;
+}
+
+.loading-overlay.ativo {
+    opacity: 1;
+    visibility: visible;
+}
+
+.loading-spinner {
+    width: 48px;
+    height: 48px;
+    border: 3px solid rgba(255,255,255,0.2);
+    border-top: 3px solid var(--azul-claro);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
 /* RODAPÉ */
 .footer {
     position: relative;
@@ -331,6 +523,16 @@ body::after {
     letter-spacing: 0.04em;
 }
 
+.footer kbd {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 0.7rem;
+    font-family: monospace;
+    margin: 0 2px;
+}
+
 .footer span {
     color: rgba(77, 163, 255, 0.65);
 }
@@ -344,6 +546,14 @@ body::after {
     .titulo h1 {
         font-size: 2rem;
     }
+    .toast {
+        min-width: 280px;
+        right: -340px;
+    }
+    .acessibilidade-controles {
+        bottom: 16px;
+        right: 16px;
+    }
 }
 
 /* RESPONSIVIDADE — tablet/desktop */
@@ -351,5 +561,18 @@ body::after {
     .menu {
         grid-template-columns: 1fr 1fr;
         max-width: 560px;
+    }
+}
+
+/* REDUÇÃO DE MOVIMENTO (Acessibilidade) */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .card {
+        animation: none !important;
     }
 }
