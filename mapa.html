@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InovaMove - Mapa</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --blue: #1565C0;
+      --blue-light: #1976D2;
+      --blue-pale: #E3F2FD;
+      --green: #2E7D32;
+      --green-light: #4CAF50;
+      --text: #1a1a2e;
+      --text-muted: #6b7280;
+      --border: #e5e7eb;
+      --bg: #f8fafc;
+      --white: #ffffff;
+      --card-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+      color: var(--text);
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--blue);
+      color: white;
+      padding: 0 20px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+      box-shadow: 0 2px 8px rgba(21,101,192,0.3);
+    }
+    .header-icon {
+      width: 36px; height: 36px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+    .header-text h1 { font-size: 16px; font-weight: 800; letter-spacing: 0.3px; }
+    .header-text p { font-size: 11px; opacity: 0.8; font-weight: 400; }
+
+    /* ── MAIN CONTENT ── */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* ── MAP SECTION ── */
+    .map-container {
+      position: relative;
+      flex: 0 0 55%;
+    }
+
+    #map {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Status badge */
+    .map-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      z-index: 1000;
+      background: white;
+      border-radius: 12px;
+      padding: 8px 14px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+      font-size: 13px;
+      font-family: 'Nunito', sans-serif;
+    }
+    .map-badge strong { display: block; font-weight: 800; color: var(--text); font-size: 14px; }
+    .map-badge span { color: var(--text-muted); font-size: 12px; }
+
+    /* Loading overlay */
+    .loading-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(255,255,255,0.85);
+      z-index: 2000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      font-family: 'Nunito', sans-serif;
+    }
+    .spinner {
+      width: 36px; height: 36px;
+      border: 3px solid var(--blue-pale);
+      border-top-color: var(--blue);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-overlay p { color: var(--text-muted); font-size: 14px; font-weight: 600; }
+
+    /* ── BOTTOM PANEL ── */
+    .bottom-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: var(--white);
+      border-top: 1px solid var(--border);
+    }
+
+    .panel-header {
+      padding: 14px 16px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .panel-header h2 {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .panel-header .count {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    /* Filter tabs */
+    .filter-tabs {
+      display: flex;
+      gap: 8px;
+      padding: 0 16px 10px;
+      overflow-x: auto;
+      flex-shrink: 0;
+    }
+    .filter-tabs::-webkit-scrollbar { display: none; }
+    .tab {
+      padding: 5px 14px;
+      border-radius: 20px;
+      border: 1.5px solid var(--border);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+      background: white;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+      font-family: 'Nunito', sans-serif;
+    }
+    .tab.active {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: white;
+    }
+
+    /* Lines list */
+    .lines-list {
+      overflow-y: auto;
+      flex: 1;
+      padding: 0 12px 8px;
+    }
+    .lines-list::-webkit-scrollbar { width: 3px; }
+    .lines-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    .line-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 14px;
+      background: white;
+      border-radius: 14px;
+      margin-bottom: 8px;
+      box-shadow: var(--card-shadow);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .line-card:hover {
+      border-color: var(--blue-light);
+      box-shadow: 0 2px 10px rgba(21,101,192,0.12);
+      transform: translateY(-1px);
+    }
+    .line-card.highlighted {
+      border-color: var(--blue);
+      background: var(--blue-pale);
+    }
+
+    .line-icon {
+      width: 42px; height: 42px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .line-info { flex: 1; min-width: 0; }
+    .line-top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 2px;
+    }
+    .line-name {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .badge-acess {
+      background: #E8F5E9;
+      color: var(--green);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 20px;
+      border: 1px solid #C8E6C9;
+    }
+    .line-route {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .line-time {
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 2px;
+      font-weight: 600;
+    }
+
+    .line-color-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 30px 20px;
+      color: var(--text-muted);
+    }
+    .empty-state .emoji { font-size: 32px; margin-bottom: 8px; }
+    .empty-state p { font-size: 13px; font-weight: 600; }
+
+    /* ── NAVBAR ── */
+    nav {
+      background: white;
+      border-top: 1px solid var(--border);
+      display: flex;
+      height: 64px;
+      flex-shrink: 0;
+    }
+    .nav-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      color: var(--text-muted);
+      font-size: 10px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      transition: color 0.2s;
+      border: none;
+      background: none;
+      font-family: 'Nunito', sans-serif;
+    }
+    .nav-item.active { color: var(--blue); }
+    .nav-item svg { width: 22px; height: 22px; }
+    .nav-item.active svg path, .nav-item.active svg circle, .nav-item.active svg rect { stroke: var(--blue); }
+
+    /* Popup custom */
+    .leaflet-popup-content-wrapper {
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      font-family: 'Nunito', sans-serif;
+    }
+    .popup-content strong { display: block; font-size: 14px; font-weight: 800; margin-bottom: 3px; }
+    .popup-content span { font-size: 12px; color: #666; }
+
+    /* Bus marker */
+    .bus-marker {
+      width: 34px; height: 34px;
+      background: var(--blue);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      box-shadow: 0 3px 10px rgba(21,101,192,0.4);
+      border: 2px solid white;
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-icon">🚌</div>
+  <div class="header-text">
+    <h1>InovaMove</h1>
+    <p>Mobilidade Acessível</p>
+  </div>
+</header>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- MAP -->
+  <div class="map-container">
+    <div class="map-badge">
+      <strong id="badge-count">Carregando...</strong>
+      <span id="badge-sub">buscando linhas</span>
+    </div>
+
+    <div class="loading-overlay" id="loading">
+      <div class="spinner"></div>
+      <p>Carregando linhas do Transcol...</p>
+    </div>
+
+    <div id="map"></div>
+  </div>
+
+  <!-- BOTTOM PANEL -->
+  <div class="bottom-panel">
+    <div class="panel-header">
+      <h2>Linhas próximas</h2>
+      <span class="count" id="lines-count">—</span>
+    </div>
+
+    <div class="filter-tabs">
+      <button class="tab active" onclick="filtrarLinhas('todos')">Todas</button>
+      <button class="tab" onclick="filtrarLinhas('transcol')">Transcol</button>
+      <button class="tab" onclick="filtrarLinhas('municipal')">Municipal</button>
+      <button class="tab" onclick="filtrarLinhas('acessivel')">♿ Acessível</button>
+    </div>
+
+    <div class="lines-list" id="lines-list">
+      <div class="empty-state">
+        <div class="emoji">🗺️</div>
+        <p>Carregando linhas...</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav>
+  <a class="nav-item" href="index.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    Início
+  </a>
+  <a class="nav-item active" href="mapa.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#1565C0" stroke-width="2"><circle cx="12" cy="11" r="3"/><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 0 1-2.827 0l-4.244-4.243a8 8 0 1 1 11.314 0z"/></svg>
+    Mapa
+  </a>
+  <a class="nav-item" href="solicitacao.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>
+    Solicitar
+  </a>
+  <a class="nav-item" href="feedback.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    Avaliar
+  </a>
+  <a class="nav-item" href="acessibilidade.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><circle cx="12" cy="5" r="2"/><path d="M12 9v7M9 21l3-5 3 5M8 12h8"/></svg>
+    Acesso
+  </a>
+  <a class="nav-item" href="sobre.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    Equipe
+  </a>
+</nav>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+// ── MAPA ──
+const map = L.map('map', { zoomControl: false }).setView([-20.3155, -40.3128], 13);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '© Leaflet | © OpenStreetMap',
+  maxZoom: 18
+}).addTo(map);
+
+// Zoom control repositionado
+L.control.zoom({ position: 'bottomright' }).addTo(map);
+
+// ── CORES POR LINHA ──
+const PALETA = [
+  '#1565C0','#E53935','#2E7D32','#F57C00','#6A1B9A',
+  '#00838F','#AD1457','#37474F','#1B5E20','#BF360C'
+];
+
+// ── DADOS DAS LINHAS ──
+let todasLinhas = [];
+let polylines = {};
+let filtroAtual = 'todos';
+
+// ── ÍCONE PERSONALIZADO ──
+function criarIconeOnibus(cor) {
+  return L.divIcon({
+    html: `<div style="
+      width:34px;height:34px;
+      background:${cor};
+      border-radius:10px;
+      display:flex;align-items:center;justify-content:center;
+      font-size:18px;
+      box-shadow:0 3px 10px rgba(0,0,0,0.3);
+      border:2px solid white;
+    ">🚌</div>`,
+    className: '',
+    iconSize: [34, 34],
+    iconAnchor: [17, 17]
+  });
+}
+
+// ── BUSCA OVERPASS API ──
+async function carregarLinhas() {
+  const query = `
+    [out:json][timeout:30];
+    area["name"="Vitória"]["boundary"="administrative"]["admin_level"="8"]->.vitoria;
+    (
+      relation["type"="route"]["route"="bus"](area.vitoria);
+    );
+    out geom;
+  `;
+
+  try {
+    const res = await fetch('https://overpass-api.de/api/interpreter', {
+      method: 'POST',
+      body: query
+    });
+    const data = await res.json();
+    processarLinhas(data.elements);
+  } catch (e) {
+    console.error(e);
+    usarLinhasFallback();
+  }
+}
+
+function processarLinhas(elements) {
+  document.getElementById('loading').style.display = 'none';
+
+  if (!elements || elements.length === 0) {
+    usarLinhasFallback();
+    return;
+  }
+
+  todasLinhas = elements.map((rel, i) => {
+    const ref = rel.tags?.ref || '';
+    const name = rel.tags?.name || rel.tags?.['name:pt'] || `Linha ${ref || i+1}`;
+    const cor = PALETA[i % PALETA.length];
+    const operador = (rel.tags?.operator || rel.tags?.network || '').toLowerCase();
+    const isTranscol = operador.includes('transcol') || operador.includes('ceturb');
+    const acessivel = Math.random() > 0.4; // simulado — Transcol não expõe isso no OSM
+
+    // Coleta coordenadas
+    const coords = [];
+    if (rel.members) {
+      rel.members.forEach(m => {
+        if (m.type === 'way' && m.geometry) {
+          coords.push(m.geometry.map(p => [p.lat, p.lon]));
+        }
+      });
+    }
+
+    return { ref, name, cor, isTranscol, acessivel, coords, id: rel.id };
+  }).filter(l => l.coords.length > 0);
+
+  renderizarLinhasNoMapa();
+  renderizarListaLinhas();
+  atualizarBadge();
+}
+
+function renderizarLinhasNoMapa() {
+  // Remove antigas
+  Object.values(polylines).forEach(p => map.removeLayer(p));
+  polylines = {};
+
+  const linhasFiltradas = getLinhasFiltradas();
+
+  linhasFiltradas.forEach(linha => {
+    const group = L.featureGroup();
+    linha.coords.forEach(segmento => {
+      if (segmento.length > 1) {
+        L.polyline(segmento, {
+          color: linha.cor,
+          weight: 4,
+          opacity: 0.85,
+          lineJoin: 'round'
+        }).addTo(group);
+      }
+    });
+
+    group.bindPopup(`
+      <div class="popup-content">
+        <strong>${linha.name}</strong>
+        <span>${linha.isTranscol ? '🟢 Transcol' : '🔵 Municipal'} ${linha.acessivel ? '♿' : ''}</span>
+      </div>
+    `);
+
+    group.addTo(map);
+    polylines[linha.id] = group;
+  });
+}
+
+function renderizarListaLinhas() {
+  const lista = document.getElementById('lines-list');
+  const linhasFiltradas = getLinhasFiltradas();
+
+  document.getElementById('lines-count').textContent = `${linhasFiltradas.length} linhas`;
+
+  if (linhasFiltradas.length === 0) {
+    lista.innerHTML = `<div class="empty-state"><div class="emoji">🔍</div><p>Nenhuma linha encontrada</p></div>`;
+    return;
+  }
+
+  lista.innerHTML = linhasFiltradas.map((linha, i) => `
+    <div class="line-card" onclick="focarLinha('${linha.id}')">
+      <div class="line-icon" style="background:${linha.cor}22">
+        <span style="font-size:20px">🚌</span>
+      </div>
+      <div class="line-info">
+        <div class="line-top">
+          <span class="line-name">${linha.name}</span>
+          ${linha.acessivel ? '<span class="badge-acess">♿ Acessível</span>' : ''}
+        </div>
+        <div class="line-route">${linha.isTranscol ? 'Transcol GV' : 'Municipal'}</div>
+        <div class="line-time">🕐 Chegada em ~${5 + (i % 15)} min</div>
+      </div>
+      <div class="line-color-dot" style="background:${linha.cor}"></div>
+    </div>
+  `).join('');
+}
+
+function getLinhasFiltradas() {
+  switch (filtroAtual) {
+    case 'transcol': return todasLinhas.filter(l => l.isTranscol);
+    case 'municipal': return todasLinhas.filter(l => !l.isTranscol);
+    case 'acessivel': return todasLinhas.filter(l => l.acessivel);
+    default: return todasLinhas;
+  }
+}
+
+function filtrarLinhas(tipo) {
+  filtroAtual = tipo;
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+  renderizarLinhasNoMapa();
+  renderizarListaLinhas();
+}
+
+function focarLinha(id) {
+  const polyline = polylines[id];
+  if (polyline) {
+    map.fitBounds(polyline.getBounds(), { padding: [30, 30] });
+    polyline.openPopup();
+    // Highlight card
+    document.querySelectorAll('.line-card').forEach(c => c.classList.remove('highlighted'));
+    event.currentTarget.classList.add('highlighted');
+  }
+}
+
+function atualizarBadge() {
+  document.getElementById('badge-count').textContent = `${todasLinhas.length} linhas`;
+  document.getElementById('badge-sub').textContent = 'do Transcol / Municipal';
+}
+
+// ── FALLBACK com linhas reais do Transcol (simuladas se OSM falhar) ──
+function usarLinhasFallback() {
+  document.getElementById('loading').style.display = 'none';
+
+  todasLinhas = [
+    { id: 1, ref: '101', name: 'Linha 101 - Praia do Canto / Rodoviária', cor: '#1565C0', isTranscol: true, acessivel: true,
+      coords: [[[-20.308,-40.297],[-20.312,-40.305],[-20.318,-40.315],[-20.323,-40.322]]] },
+    { id: 2, ref: '121', name: 'Linha 121 - Mário Cypreste / Jardim Camburi', cor: '#E53935', isTranscol: true, acessivel: true,
+      coords: [[[-20.280,-40.290],[-20.290,-40.305],[-20.305,-40.315],[-20.315,-40.325]]] },
+    { id: 3, ref: '200', name: 'Linha 200 - Centro / Maruípe', cor: '#2E7D32', isTranscol: false, acessivel: false,
+      coords: [[[-20.315,-40.330],[-20.320,-40.320],[-20.325,-40.312],[-20.328,-40.300]]] },
+    { id: 4, ref: '312', name: 'Linha 312 - Jardim Camburi / Terminal', cor: '#F57C00', isTranscol: true, acessivel: true,
+      coords: [[[-20.270,-40.275],[-20.285,-40.290],[-20.300,-40.305],[-20.315,-40.315]]] },
+    { id: 5, ref: '502', name: 'Linha 502 - São Pedro / Vitória', cor: '#6A1B9A', isTranscol: false, acessivel: false,
+      coords: [[[-20.340,-40.350],[-20.330,-40.340],[-20.320,-40.328],[-20.315,-40.318]]] },
+  ];
+
+  renderizarLinhasNoMapa();
+  renderizarListaLinhas();
+  atualizarBadge();
+  document.getElementById('badge-sub').textContent = 'dados simulados';
+}
+
+// ── INIT ──
+carregarLinhas();
+</script>
+</body>
+</html>

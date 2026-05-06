@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InovaMove - Avaliar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    :root{
+      --blue:#1565C0;--blue-pale:#E3F2FD;
+      --green:#2E7D32;--green-light:#4CAF50;
+      --yellow:#F9A825;
+      --text:#1a1a2e;--text-muted:#6b7280;--border:#e5e7eb;
+      --bg:#f8fafc;--white:#ffffff;
+    }
+    body{font-family:'Nunito',sans-serif;background:var(--bg);display:flex;flex-direction:column;height:100vh;overflow:hidden;color:var(--text);}
+    header{background:var(--blue);color:white;padding:0 20px;height:56px;display:flex;align-items:center;gap:12px;flex-shrink:0;box-shadow:0 2px 8px rgba(21,101,192,0.3);}
+    .header-icon{width:36px;height:36px;background:rgba(255,255,255,0.2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;}
+    .header-text h1{font-size:16px;font-weight:800;}
+    .header-text p{font-size:11px;opacity:0.8;}
+    
+    /* 👇 CORREÇÃO APLICADA AQUI 👇 */
+    .main{flex:1;overflow-y:auto;padding:16px 16px calc(120px + env(safe-area-inset-bottom));}
+    
+    .main::-webkit-scrollbar{width:3px;}
+
+    .page-title{font-size:18px;font-weight:900;margin-bottom:4px;}
+    .page-sub{font-size:13px;color:var(--text-muted);font-weight:600;margin-bottom:20px;}
+
+    /* Last ride summary */
+    .ride-card{background:linear-gradient(135deg,var(--blue) 0%,#0D47A1 100%);border-radius:20px;padding:18px;color:white;margin-bottom:20px;}
+    .ride-label{font-size:11px;opacity:0.8;font-weight:700;margin-bottom:6px;}
+    .ride-name{font-size:17px;font-weight:900;margin-bottom:4px;}
+    .ride-detail{font-size:12px;opacity:0.8;font-weight:600;}
+    .ride-stats{display:flex;gap:16px;margin-top:14px;}
+    .ride-stat{background:rgba(255,255,255,0.15);border-radius:10px;padding:8px 12px;font-size:11px;font-weight:700;}
+    .ride-stat span{display:block;font-size:16px;font-weight:900;}
+
+    /* Section */
+    .section-title{font-size:14px;font-weight:800;color:var(--text);margin-bottom:12px;}
+
+    /* Star rating */
+    .rating-card{background:white;border-radius:16px;border:1px solid var(--border);padding:16px;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,0.05);}
+    .rating-label{font-size:13px;font-weight:800;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+    .stars{display:flex;gap:6px;}
+    .star{font-size:28px;cursor:pointer;transition:transform 0.15s;user-select:none;}
+    .star:hover,.star.active{transform:scale(1.2);}
+    .star.active{filter:drop-shadow(0 0 4px rgba(249,168,37,0.5));}
+
+    /* Chips */
+    .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+    .chip{padding:7px 13px;border-radius:20px;border:1.5px solid var(--border);font-size:12px;font-weight:700;color:var(--text-muted);background:white;cursor:pointer;transition:all 0.2s;font-family:'Nunito',sans-serif;}
+    .chip.good{border-color:var(--green-light);color:var(--green);}
+    .chip.good.selected{background:var(--green-light);color:white;border-color:var(--green-light);}
+    .chip.bad{border-color:#EF9A9A;color:#C62828;}
+    .chip.bad.selected{background:#EF5350;color:white;border-color:#EF5350;}
+
+    textarea{width:100%;padding:14px;border-radius:14px;border:1.5px solid var(--border);font-size:13px;font-family:'Nunito',sans-serif;color:var(--text);resize:none;height:80px;margin-top:12px;box-shadow:0 1px 4px rgba(0,0,0,0.05);}
+    textarea:focus{outline:none;border-color:var(--blue);}
+
+    .send-btn{width:100%;padding:16px;background:var(--blue);color:white;border:none;border-radius:16px;font-size:16px;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;box-shadow:0 4px 16px rgba(21,101,192,0.35);transition:all 0.2s;margin-top:20px;}
+    .send-btn:hover{opacity:0.9;transform:translateY(-1px);}
+
+    /* Overlay */
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:900;display:none;align-items:center;justify-content:center;padding:20px;}
+    .overlay.show{display:flex;}
+    .confirm-card{background:white;border-radius:24px;padding:28px;text-align:center;max-width:320px;width:100%;animation:popIn 0.3s cubic-bezier(0.34,1.56,0.64,1);}
+    @keyframes popIn{from{transform:scale(0.8);opacity:0;}to{transform:scale(1);opacity:1;}}
+    .confirm-emoji{font-size:56px;margin-bottom:12px;}
+    .confirm-title{font-size:20px;font-weight:900;margin-bottom:6px;}
+    .confirm-text{font-size:13px;color:var(--text-muted);font-weight:600;line-height:1.6;margin-bottom:20px;}
+    .confirm-btn{width:100%;padding:14px;background:var(--blue);color:white;border:none;border-radius:14px;font-size:15px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+
+    nav{background:white;border-top:1px solid var(--border);display:flex;height:64px;flex-shrink:0;position:fixed;bottom:0;left:0;right:0;}
+    .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:var(--text-muted);font-size:10px;font-weight:700;text-decoration:none;cursor:pointer;transition:color 0.2s;border:none;background:none;font-family:'Nunito',sans-serif;}
+    .nav-item.active{color:var(--blue);}
+    .nav-item svg{width:22px;height:22px;}
+  </style>
+</head>
+<body>
+<header>
+  <div class="header-icon">⭐</div>
+  <div class="header-text"><h1>InovaMove</h1><p>Avaliar Serviço</p></div>
+</header>
+
+<div class="main">
+  <div class="page-title">Avaliar</div>
+  <div class="page-sub">Sua opinião melhora o transporte para todos</div>
+
+  <div class="ride-card">
+    <div class="ride-label">Última viagem</div>
+    <div class="ride-name">🚌 Linha 101 – Praia do Canto</div>
+    <div class="ride-detail">Hoje • Saída 08:14 • Chegada 08:37</div>
+    <div class="ride-stats">
+      <div class="ride-stat"><span>23 min</span>Duração</div>
+      <div class="ride-stat"><span>♿</span>Acessível</div>
+      <div class="ride-stat"><span>Mot. João</span>Motorista</div>
+    </div>
+  </div>
+
+  <div class="section-title">Como foi a viagem?</div>
+
+  <div class="rating-card">
+    <div class="rating-label">⭐ Qualidade geral</div>
+    <div class="stars" id="stars-geral">
+      <span class="star" onclick="setRating('geral',1)">☆</span>
+      <span class="star" onclick="setRating('geral',2)">☆</span>
+      <span class="star" onclick="setRating('geral',3)">☆</span>
+      <span class="star" onclick="setRating('geral',4)">☆</span>
+      <span class="star" onclick="setRating('geral',5)">☆</span>
+    </div>
+  </div>
+
+  <div class="rating-card">
+    <div class="rating-label">♿ Acessibilidade</div>
+    <div class="stars" id="stars-acess">
+      <span class="star" onclick="setRating('acess',1)">☆</span>
+      <span class="star" onclick="setRating('acess',2)">☆</span>
+      <span class="star" onclick="setRating('acess',3)">☆</span>
+      <span class="star" onclick="setRating('acess',4)">☆</span>
+      <span class="star" onclick="setRating('acess',5)">☆</span>
+    </div>
+  </div>
+
+  <div class="rating-card">
+    <div class="rating-label">🚗 Condução do motorista</div>
+    <div class="stars" id="stars-mot">
+      <span class="star" onclick="setRating('mot',1)">☆</span>
+      <span class="star" onclick="setRating('mot',2)">☆</span>
+      <span class="star" onclick="setRating('mot',3)">☆</span>
+      <span class="star" onclick="setRating('mot',4)">☆</span>
+      <span class="star" onclick="setRating('mot',5)">☆</span>
+    </div>
+  </div>
+
+  <div class="section-title" style="margin-top:16px">O que você destacaria?</div>
+
+  <div class="rating-card">
+    <div class="rating-label" style="margin-bottom:6px">👍 Pontos positivos</div>
+    <div class="chips">
+      <button class="chip good" onclick="toggleChip(this)">Motorista atencioso</button>
+      <button class="chip good" onclick="toggleChip(this)">Ônibus limpo</button>
+      <button class="chip good" onclick="toggleChip(this)">Rampa funcionando</button>
+      <button class="chip good" onclick="toggleChip(this)">Pontual</button>
+      <button class="chip good" onclick="toggleChip(this)">Ar-condicionado</button>
+    </div>
+  </div>
+
+  <div class="rating-card" style="margin-top:10px">
+    <div class="rating-label" style="margin-bottom:6px">👎 Pontos negativos</div>
+    <div class="chips">
+      <button class="chip bad" onclick="toggleChip(this)">Motorista não parou</button>
+      <button class="chip bad" onclick="toggleChip(this)">Rampa com defeito</button>
+      <button class="chip bad" onclick="toggleChip(this)">Superlotado</button>
+      <button class="chip bad" onclick="toggleChip(this)">Atrasado</button>
+      <button class="chip bad" onclick="toggleChip(this)">Ônibus sujo</button>
+    </div>
+    <textarea placeholder="Descreva melhor o que aconteceu (opcional)..."></textarea>
+  </div>
+
+  <button class="send-btn" onclick="enviar()">⭐ Enviar Avaliação</button>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="confirm-card">
+    <div class="confirm-emoji">🙏</div>
+    <div class="confirm-title">Obrigado!</div>
+    <div class="confirm-text">Sua avaliação foi enviada. Você contribui para um transporte mais acessível em Vitória-ES.</div>
+    <button class="confirm-btn" onclick="fechar()">Voltar ao Início</button>
+  </div>
+</div>
+
+<nav>
+  <a class="nav-item" href="index.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    Início
+  </a>
+  <a class="nav-item" href="mapa.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><circle cx="12" cy="11" r="3"/><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 0 1-2.827 0l-4.244-4.243a8 8 0 1 1 11.314 0z"/></svg>
+    Mapa
+  </a>
+  <a class="nav-item" href="solicitacao.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>
+    Solicitar
+  </a>
+  <a class="nav-item active" href="feedback.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#1565C0" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    Avaliar
+  </a>
+  <a class="nav-item" href="acessibilidade.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><circle cx="12" cy="5" r="2"/><path d="M12 9v7M9 21l3-5 3 5M8 12h8"/></svg>
+    Acesso
+  </a>
+  <a class="nav-item" href="sobre.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    Equipe
+  </a>
+</nav>
+
+<script>
+const ratings={};
+function setRating(id,val){
+  ratings[id]=val;
+  const stars=document.querySelectorAll(`#stars-${id} .star`);
+  stars.forEach((s,i)=>{s.textContent=i<val?'⭐':'☆';s.classList.toggle('active',i<val);});
+}
+function toggleChip(el){el.classList.toggle('selected');}
+function enviar(){document.getElementById('overlay').classList.add('show');}
+function fechar(){document.getElementById('overlay').classList.remove('show');window.location.href='index.html';}
+</script>
+</body>
+</html>
