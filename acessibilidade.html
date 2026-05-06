@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InovaMove - Acessibilidade</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    :root{
+      --blue:#1565C0;--blue-light:#1976D2;--blue-pale:#E3F2FD;
+      --green:#2E7D32;--green-light:#4CAF50;
+      --text:#1a1a2e;--text-muted:#6b7280;--border:#e5e7eb;
+      --bg:#f8fafc;--white:#ffffff;
+    }
+
+    /* ── MODO ALTO CONTRASTE ── */
+    body.high-contrast {
+      --bg: #000000;
+      --white: #121212;
+      --text: #FFFF00;
+      --text-muted: #DDDDDD;
+      --border: #FFFF00;
+      --blue: #FFFF00;
+      --blue-light: #FFFF00;
+      --blue-pale: #222222;
+      --green: #00FF00;
+      --green-light: #00FF00;
+    }
+    body.high-contrast header { background: #000000; color: #FFFF00; border-bottom: 2px solid #FFFF00; }
+    body.high-contrast .header-icon { background: #FFFF00; color: #000000; }
+    body.high-contrast .save-btn { background: #FFFF00; color: #000000; font-weight: 900; }
+    body.high-contrast .nav-item.active { color: #FFFF00; }
+    body.high-contrast .nav-item.active svg path, 
+    body.high-contrast .nav-item.active svg circle, 
+    body.high-contrast .nav-item.active svg rect { stroke: #FFFF00; }
+    body.high-contrast .toggle-switch .slider:before { background: #000000; }
+
+    body{font-family:'Nunito',sans-serif;background:var(--bg);display:flex;flex-direction:column;height:100vh;overflow:hidden;color:var(--text); transition: zoom 0.2s;}
+    header{background:var(--blue);color:white;padding:0 20px;height:56px;display:flex;align-items:center;gap:12px;flex-shrink:0;box-shadow:0 2px 8px rgba(21,101,192,0.3);}
+    .header-icon{width:36px;height:36px;background:rgba(255,255,255,0.2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;}
+    .header-text h1{font-size:16px;font-weight:800;}
+    .header-text p{font-size:11px;opacity:0.8;}
+    .main{flex:1;overflow-y:auto;padding:16px 16px 80px;}
+    .main::-webkit-scrollbar{width:3px;}
+    .main::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+
+    .page-title{font-size:18px;font-weight:900;color:var(--text);margin-bottom:4px;}
+    .page-sub{font-size:13px;color:var(--text-muted);font-weight:600;margin-bottom:20px;}
+
+    /* Perfil selector */
+    .perfil-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
+    .perfil-card{background:var(--white);border-radius:16px;padding:14px;border:2px solid var(--border);cursor:pointer;text-align:center;transition:all 0.2s;}
+    .perfil-card.selected{border-color:var(--blue);background:var(--blue-pale);}
+    .perfil-card .emoji{font-size:28px;margin-bottom:6px;}
+    .perfil-card .nome{font-size:12px;font-weight:800;color:var(--text);}
+    .perfil-card .desc{font-size:10px;color:var(--text-muted);font-weight:600;margin-top:2px;}
+
+    /* Section */
+    .section-title{font-size:14px;font-weight:800;color:var(--text);margin-bottom:12px;display:flex;align-items:center;gap:6px;}
+
+    /* Toggle card */
+    .toggle-card{background:var(--white);border-radius:14px;border:1px solid var(--border);margin-bottom:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.05);}
+    .toggle-row{display:flex;align-items:center;gap:14px;padding:14px 16px;}
+    .toggle-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+    .toggle-info{flex:1;}
+    .toggle-name{font-size:13px;font-weight:800;color:var(--text);}
+    .toggle-desc{font-size:11px;color:var(--text-muted);font-weight:600;margin-top:1px;}
+    .toggle-switch{position:relative;width:44px;height:24px;flex-shrink:0;}
+    .toggle-switch input{opacity:0;width:0;height:0;}
+    .slider{position:absolute;inset:0;background:#d1d5db;border-radius:24px;cursor:pointer;transition:0.3s;}
+    .slider:before{content:"";position:absolute;height:18px;width:18px;left:3px;bottom:3px;background:white;border-radius:50%;transition:0.3s;box-shadow:0 1px 3px rgba(0,0,0,0.2);}
+    input:checked+.slider{background:var(--blue);}
+    input:checked+.slider:before{transform:translateX(20px);}
+
+    /* Font size slider */
+    .slider-card{background:var(--white);border-radius:14px;border:1px solid var(--border);padding:16px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,0.05);}
+    .slider-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+    .slider-label span{font-size:13px;font-weight:800;}
+    .slider-label .val{background:var(--blue-pale);color:var(--blue);padding:3px 10px;border-radius:20px;font-size:12px;font-weight:800;}
+    input[type=range]{width:100%;accent-color:var(--blue);}
+
+    /* Future Cards */
+    .future-card { opacity: 0.7; position: relative; }
+    .future-card .slider { background: #e5e7eb !important; cursor: not-allowed; }
+    .future-card .slider:before { transform: translateX(0) !important; }
+    .badge-futuro { background: #FFF3E0; color: #E65100; font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 10px; border: 1px solid #FFE0B2; margin-left: 6px; display: inline-block; vertical-align: middle; }
+    body.high-contrast .badge-futuro { background: #000; color: #FF0; border-color: #FF0; }
+
+    /* Save button */
+    .save-btn{width:100%;padding:15px;background:var(--blue);color:var(--white);border:none;border-radius:14px;font-size:15px;font-weight:800;cursor:pointer;margin-top:20px;font-family:'Nunito',sans-serif;transition:opacity 0.2s;box-shadow:0 4px 12px rgba(21,101,192,0.3);}
+    .save-btn:hover{opacity:0.9;}
+
+    nav{background:var(--white);border-top:1px solid var(--border);display:flex;height:64px;flex-shrink:0;position:fixed;bottom:0;left:0;right:0;}
+    .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:var(--text-muted);font-size:10px;font-weight:700;text-decoration:none;cursor:pointer;transition:color 0.2s;border:none;background:none;font-family:'Nunito',sans-serif;}
+    .nav-item.active{color:var(--blue);}
+    .nav-item svg{width:22px;height:22px;}
+
+    /* Toast */
+    .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--green);color:white;padding:10px 24px;border-radius:20px;font-size:13px;font-weight:700;opacity:0;transition:all 0.3s;z-index:999;white-space:nowrap;}
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+    body.high-contrast .toast { background: #FFFF00; color: #000; border: 2px solid #000; }
+  </style>
+</head>
+<body>
+<header>
+  <div class="header-icon">♿</div>
+  <div class="header-text"><h1>InovaMove</h1><p>Configurações de Acessibilidade</p></div>
+</header>
+
+<div class="main">
+  <div class="page-title">Meu Perfil</div>
+  <div class="page-sub">Selecione seu perfil para adaptar o app</div>
+
+  <div class="perfil-grid">
+    <div class="perfil-card" onclick="selecionarPerfil(this, 'visual')">
+      <div class="emoji">👁️</div>
+      <div class="nome">Deficiência Visual</div>
+      <div class="desc">Leitor de tela e alto contraste</div>
+    </div>
+    <div class="perfil-card" onclick="selecionarPerfil(this, 'auditiva')">
+      <div class="emoji">🦻</div>
+      <div class="nome">Defic. Auditiva</div>
+      <div class="desc">Alertas visuais e vibração</div>
+    </div>
+    <div class="perfil-card" onclick="selecionarPerfil(this, 'fisica')">
+      <div class="emoji">🦽</div>
+      <div class="nome">Defic. Física</div>
+      <div class="desc">Foco em rampas (Futuro)</div>
+    </div>
+    <div class="perfil-card" onclick="selecionarPerfil(this, 'idoso')">
+      <div class="emoji">👴</div>
+      <div class="nome">Idoso</div>
+      <div class="desc">Interface ampliada</div>
+    </div>
+  </div>
+
+  <div class="section-title">🖥️ Interface Funcional</div>
+
+  <div class="slider-card">
+    <div class="slider-label">
+      <span>Tamanho do texto</span>
+      <span class="val" id="font-val">Normal</span>
+    </div>
+    <input type="range" min="1" max="3" value="2" id="slider-fonte" oninput="updateFont(this.value)">
+    <div style="display:flex;justify-content:space-between;margin-top:4px;">
+      <span style="font-size:10px;color:var(--text-muted);font-weight:600;">A</span>
+      <span style="font-size:14px;color:var(--text-muted);font-weight:600;">A</span>
+      <span style="font-size:18px;color:var(--text-muted);font-weight:600;">A</span>
+    </div>
+  </div>
+
+  <div class="toggle-card">
+    <div class="toggle-row">
+      <div class="toggle-icon" style="background:#FFF3E0; color:#000;">🌗</div>
+      <div class="toggle-info">
+        <div class="toggle-name">Alto Contraste</div>
+        <div class="toggle-desc">Melhora visibilidade para baixa visão</div>
+      </div>
+      <label class="toggle-switch"><input type="checkbox" id="toggle-contraste" onchange="aplicarAltoContraste(this.checked)"><span class="slider"></span></label>
+    </div>
+  </div>
+
+  <div class="toggle-card">
+    <div class="toggle-row">
+      <div class="toggle-icon" style="background:#E8F5E9; color:#000;">🔤</div>
+      <div class="toggle-info">
+        <div class="toggle-name">Leitor de Tela</div>
+        <div class="toggle-desc">Toque nos textos para ouvir em voz alta</div>
+      </div>
+      <label class="toggle-switch"><input type="checkbox" id="toggle-leitor"><span class="slider"></span></label>
+    </div>
+  </div>
+
+  <div class="toggle-card">
+    <div class="toggle-row">
+      <div class="toggle-icon" style="background:#E3F2FD; color:#000;">📳</div>
+      <div class="toggle-info">
+        <div class="toggle-name">Vibração nos Alertas</div>
+        <div class="toggle-desc">Celular vibra ao interagir/salvar</div>
+      </div>
+      <label class="toggle-switch"><input type="checkbox" id="toggle-vibra" checked onchange="testarVibracao(this.checked)"><span class="slider"></span></label>
+    </div>
+  </div>
+
+  <!-- SEÇÃO DE IDEIAS FUTURAS -->
+  <div class="section-title" style="margin-top:24px; color: var(--blue);">🚀 Ideias Futuras (Em Breve)</div>
+  <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px; font-weight: 600;">
+    Estas funções dependem de integração com o sistema de frota de ônibus e serão lançadas nas próximas atualizações.
+  </p>
+
+  <div class="toggle-card future-card">
+    <div class="toggle-row">
+      <div class="toggle-icon" style="background:#E8F5E9; color:#000;">♿</div>
+      <div class="toggle-info">
+        <div class="toggle-name">Apenas Linhas Acessíveis <span class="badge-futuro">Em breve</span></div>
+        <div class="toggle-desc">Filtrar ônibus com rampa/elevador no mapa</div>
+      </div>
+      <label class="toggle-switch"><input type="checkbox" disabled><span class="slider"></span></label>
+    </div>
+  </div>
+
+  <div class="toggle-card future-card">
+    <div class="toggle-row">
+      <div class="toggle-icon" style="background:#F3E5F5; color:#000;">🔔</div>
+      <div class="toggle-info">
+        <div class="toggle-name">Alerta de Chegada <span class="badge-futuro">Em breve</span></div>
+        <div class="toggle-desc">Aviso GPS quando o ônibus estiver a 2 min</div>
+      </div>
+      <label class="toggle-switch"><input type="checkbox" disabled><span class="slider"></span></label>
+    </div>
+  </div>
+
+  <div class="toggle-card future-card">
+    <div class="toggle-row">
+      <div class="toggle-icon" style="background:#FFF3E0; color:#000;">🪑</div>
+      <div class="toggle-info">
+        <div class="toggle-name">Reservar Assento Prioritário <span class="badge-futuro">Em breve</span></div>
+        <div class="toggle-desc">Aviso direto no painel do motorista</div>
+      </div>
+      <label class="toggle-switch"><input type="checkbox" disabled><span class="slider"></span></label>
+    </div>
+  </div>
+
+  <button class="save-btn" onclick="salvar()">✅ Salvar Configurações</button>
+</div>
+
+<div class="toast" id="toast">✅ Configurações salvas e aplicadas!</div>
+
+<nav>
+  <a class="nav-item" href="index.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    Início
+  </a>
+  <a class="nav-item" href="mapa.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="11" r="3"/><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 0 1-2.827 0l-4.244-4.243a8 8 0 1 1 11.314 0z"/></svg>
+    Mapa
+  </a>
+  <a class="nav-item" href="solicitacao.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>
+    Solicitar
+  </a>
+  <a class="nav-item" href="feedback.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    Avaliar
+  </a>
+  <a class="nav-item active" href="acessibilidade.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="2"/><path d="M12 9v7M9 21l3-5 3 5M8 12h8"/></svg>
+    Acesso
+  </a>
+  <a class="nav-item" href="sobre.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    Equipe
+  </a>
+</nav>
+
+<script>
+// ── FUNCIONALIDADES DE ACESSIBILIDADE ──
+
+// 1. SELEÇÃO DE PERFIL E AUTOMAÇÃO
+function selecionarPerfil(el, tipo) {
+  document.querySelectorAll('.perfil-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+
+  const contraste = document.getElementById('toggle-contraste');
+  const leitor = document.getElementById('toggle-leitor');
+  const vibra = document.getElementById('toggle-vibra');
+  const slider = document.getElementById('slider-fonte');
+
+  // Reseta tudo
+  contraste.checked = false; leitor.checked = false; vibra.checked = false; slider.value = 2;
+  
+  // Aplica presets baseados no perfil
+  if(tipo === 'visual') {
+    contraste.checked = true;
+    leitor.checked = true;
+  } else if (tipo === 'auditiva') {
+    vibra.checked = true;
+  } else if (tipo === 'idoso') {
+    slider.value = 3;
+  }
+
+  // Dispara eventos para aplicar visualmente
+  aplicarAltoContraste(contraste.checked);
+  updateFont(slider.value);
+}
+
+// 2. TAMANHO DA FONTE (ZOOM)
+function updateFont(v){
+  const labels = ['Pequeno','Normal','Grande'];
+  document.getElementById('font-val').textContent = labels[v-1];
+  
+  // Aplica zoom no body para simular aumento de fonte geral
+  let zoomLevel = "100%";
+  if(v == 1) zoomLevel = "90%";
+  if(v == 3) zoomLevel = "115%";
+  
+  document.body.style.zoom = zoomLevel;
+}
+
+// 3. ALTO CONTRASTE
+function aplicarAltoContraste(ativo) {
+  if (ativo) {
+    document.body.classList.add('high-contrast');
+  } else {
+    document.body.classList.remove('high-contrast');
+  }
+}
+
+// 4. VIBRAÇÃO
+function testarVibracao(ativo) {
+  if (ativo && navigator.vibrate) {
+    navigator.vibrate(200); // Vibra por 200ms
+  }
+}
+
+// 5. LEITOR DE TELA (Speech Synthesis API)
+document.addEventListener('click', function(e) {
+  const leitorAtivo = document.getElementById('toggle-leitor').checked;
+  
+  // Se o leitor estiver ligado e o elemento clicado não for um input/botão de toggle
+  if(leitorAtivo && e.target.tagName !== 'INPUT' && e.target.tagName !== 'LABEL' && e.target.tagName !== 'SPAN') {
+    let textoParaLer = e.target.innerText || e.target.textContent;
+    
+    // Pega apenas o texto mais próximo se clicar num container muito grande
+    if(textoParaLer && textoParaLer.trim() !== "") {
+      window.speechSynthesis.cancel(); // Para fala anterior
+      let leitura = new SpeechSynthesisUtterance(textoParaLer.trim());
+      leitura.lang = 'pt-BR';
+      leitura.rate = 1.0;
+      window.speechSynthesis.speak(leitura);
+    }
+  }
+});
+
+// 6. SALVAR CONFIGURAÇÕES
+function salvar(){
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  
+  // Feedback de vibração ao salvar
+  const vibraAtivo = document.getElementById('toggle-vibra').checked;
+  if(vibraAtivo && navigator.vibrate) {
+    navigator.vibrate([100, 50, 100]); // Padrão de vibração de sucesso
+  }
+  
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+</script>
+</body>
+</html>
