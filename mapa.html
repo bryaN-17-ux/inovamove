@@ -30,6 +30,7 @@
       display: flex;
       flex-direction: column;
       height: 100vh;
+      height: 100dvh; /* correção mobile: acompanha viewport dinâmica */
       overflow: hidden;
       color: var(--text);
     }
@@ -62,17 +63,20 @@
       display: flex;
       flex-direction: column;
       overflow: hidden;
+      min-height: 0; /* correção: impede flex item de vazar */
     }
 
     /* ── MAP SECTION ── */
     .map-container {
       position: relative;
       flex: 0 0 55%;
+      min-height: 0;
     }
 
     #map {
       width: 100%;
       height: 100%;
+      min-height: 0; /* correção: garante que o mapa não colapsa */
     }
 
     /* Status badge */
@@ -122,6 +126,7 @@
       overflow: hidden;
       background: var(--white);
       border-top: 1px solid var(--border);
+      min-height: 0; /* correção: impede overflow */
     }
 
     .panel-header {
@@ -175,6 +180,7 @@
       overflow-y: auto;
       flex: 1;
       padding: 0 12px 8px;
+      min-height: 0; /* correção: necessário para scroll funcionar dentro de flex */
     }
     .lines-list::-webkit-scrollbar { width: 3px; }
     .lines-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
@@ -474,9 +480,8 @@ function processarLinhas(elements) {
     const cor = PALETA[i % PALETA.length];
     const operador = (rel.tags?.operator || rel.tags?.network || '').toLowerCase();
     const isTranscol = operador.includes('transcol') || operador.includes('ceturb');
-    const acessivel = Math.random() > 0.4; // simulado — Transcol não expõe isso no OSM
+    const acessivel = Math.random() > 0.4;
 
-    // Coleta coordenadas
     const coords = [];
     if (rel.members) {
       rel.members.forEach(m => {
@@ -495,7 +500,6 @@ function processarLinhas(elements) {
 }
 
 function renderizarLinhasNoMapa() {
-  // Remove antigas
   Object.values(polylines).forEach(p => map.removeLayer(p));
   polylines = {};
 
@@ -538,7 +542,7 @@ function renderizarListaLinhas() {
   }
 
   lista.innerHTML = linhasFiltradas.map((linha, i) => `
-    <div class="line-card" onclick="focarLinha('${linha.id}')">
+    <div class="line-card" onclick="focarLinha('${linha.id}', event)">
       <div class="line-icon" style="background:${linha.cor}22">
         <span style="font-size:20px">🚌</span>
       </div>
@@ -572,14 +576,13 @@ function filtrarLinhas(tipo) {
   renderizarListaLinhas();
 }
 
-function focarLinha(id) {
+function focarLinha(id, e) {
   const polyline = polylines[id];
   if (polyline) {
     map.fitBounds(polyline.getBounds(), { padding: [30, 30] });
     polyline.openPopup();
-    // Highlight card
     document.querySelectorAll('.line-card').forEach(c => c.classList.remove('highlighted'));
-    event.currentTarget.classList.add('highlighted');
+    if (e && e.currentTarget) e.currentTarget.classList.add('highlighted');
   }
 }
 
@@ -588,7 +591,7 @@ function atualizarBadge() {
   document.getElementById('badge-sub').textContent = 'do Transcol / Municipal';
 }
 
-// ── FALLBACK com linhas reais do Transcol (simuladas se OSM falhar) ──
+// ── FALLBACK ──
 function usarLinhasFallback() {
   document.getElementById('loading').style.display = 'none';
 
