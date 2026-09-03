@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InovaMove - Acessibilidade</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/variables.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/acessibilidade.css">
+</head>
+<body>
+<header>
+  <div class="header-icon">♿</div>
+  <div class="header-text"><h1>InovaMove</h1><p>Configurações de Acessibilidade</p></div>
+</header>
+
+<div class="main">
+  <div class="page-title">Meu Perfil</div>
+  <div class="page-sub">Selecione seu perfil para adaptar o app</div>
+
+  <div class="perfil-grid">
+    <div class="perfil-card" onclick="selecionarPerfil(this, 'visual')">
+      <div class="emoji">👁️</div>
+      <div class="nome">Deficiência Visual</div>
+      <div class="desc">Leitor de tela e alto contraste</div>
+    </div>
+    <div class="perfil-card" onclick="selecionarPerfil(this, 'auditiva')">
+      <div class="emoji">🦻</div>
+      <div class="nome">Defic. Auditiva</div>
+      <div class="desc">Alertas visuais e vibração</div>
+    </div>
+    <div class="perfil-card" onclick="selecionarPerfil(this, 'fisica')">
+      <div class="emoji">🦽</div>
+      <div class="nome">Defic. Física</div>
+      <div class="desc">Foco em rampas (Futuro)</div>
+    </div>
+    <div class="perfil-card" onclick="selecionarPerfil(this, 'idoso')">
+      <div class="emoji">👴</div>
+      <div class="nome">Idoso</div>
+      <div class="desc">Interface ampliada</div>
+    </div>
+  </div>
+
+  <div class="section-title">🖥️ Interface Funcional</div>
+
+  <div class="slider-card">
+    <div class="slider-label">
+      <span>Tamanho do texto</span>
+      <span class="val" id="font-val">Normal</span>
+    </div>
+    <input type="range" min="1" max="3" value="2" id="slider-fonte" oninput="updateFont(this.value)">
+    <div style="display:flex;justify-content:space-between;margin-top:4px;">
+      <span style="font-size:10px;color:var(--text-muted);font-weight:600;">A</span>
+      <span style="font-size:14px;color:var(--text-muted);font-weight:600;">A</span>
+      <span style="font-size:18px;color:var(--text-muted);font-weight:600;">A</span>
+    </div>
+  </div>
+
+  <div class="toggle-card">
+    <div class="toggle-row">
+      <div class="toggle-icon" style="background:#FFF3E0; color:#000;">🌗</div>
+      <div class="toggle-info">
+        <div class="toggle-name">Alto Contraste</div>
+        <div class="toggle-desc">Melhora visibilidade para baixa visão</div>
+      </div>
+      <label class="toggle-switch"><input type="checkbox" id="toggle-contraste" onchange="aplicarAltoContraste(this.checked)"><span class="slider"></span></label>
+    </div>
+  </div>
+
+  <div class="toggle-card">
+    <div class="toggle-row">
+      <div class="toggle-icon" style="background:#E8F5E9; color:#000;">🔤</div>
+      <div class="toggle-info">
+        <div class="toggle-name">Leitor de Tela</div>
+        <div class="toggle-desc">Toque nos textos para ouvir em voz alta</div>
+      </div>
+      <label class="toggle-switch"><input type="checkbox" id="toggle-leitor"><span class="slider"></span></label>
+    </div>
+  </div>
+
+  <div class="toggle-card">
+    <div class="toggle-row">
+      <div class="toggle-icon" style="background:#E3F2FD; color:#000;">📳</div>
+      <div class="toggle-info">
+        <div class="toggle-name">Vibração nos Alertas</div>
+        <div class="toggle-desc">Celular vibra ao interagir/salvar</div>
+      </div>
+      <label class="toggle-switch"><input type="checkbox" id="toggle-vibra" checked onchange="testarVibracao(this.checked)"><span class="slider"></span></label>
+    </div>
+  </div>
+
+  <div class="section-title" style="margin-top:24px; color: var(--blue);">🚀 Ideias Futuras (Em Breve)</div>
+  <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px; font-weight: 600;">
+    Estas funções dependem de integração com o sistema de frota de ônibus e serão lançadas nas próximas atualizações.
+  </p>
+
+  <div class="toggle-card future-card">
+    <div class="toggle-row">
+      <div class="toggle-icon" style="background:#E8F5E9; color:#000;">♿</div>
+      <div class="toggle-info">
+        <div class="toggle-name">Apenas Linhas Acessíveis <span class="badge-futuro">Em breve</span></div>
+        <div class="toggle-desc">Filtrar ônibus com rampa/elevador no mapa</div>
+      </div>
+      <label class="toggle-switch"><input type="checkbox" disabled><span class="slider"></span></label>
+    </div>
+  </div>
+
+  <div class="toggle-card future-card">
+    <div class="toggle-row">
+      <div class="toggle-icon" style="background:#F3E5F5; color:#000;">🔔</div>
+      <div class="toggle-info">
+        <div class="toggle-name">Alerta de Chegada <span class="badge-futuro">Em breve</span></div>
+        <div class="toggle-desc">Aviso GPS quando o ônibus estiver a 2 min</div>
+      </div>
+      <label class="toggle-switch"><input type="checkbox" disabled><span class="slider"></span></label>
+    </div>
+  </div>
+
+  <div class="toggle-card future-card">
+    <div class="toggle-row">
+      <div class="toggle-icon" style="background:#FFF3E0; color:#000;">🪑</div>
+      <div class="toggle-info">
+        <div class="toggle-name">Reservar Assento Prioritário <span class="badge-futuro">Em breve</span></div>
+        <div class="toggle-desc">Aviso direto no painel do motorista</div>
+      </div>
+      <label class="toggle-switch"><input type="checkbox" disabled><span class="slider"></span></label>
+    </div>
+  </div>
+
+  <button class="save-btn" onclick="salvar()">✅ Salvar Configurações</button>
+</div>
+
+<div class="toast" id="toast">✅ Configurações salvas e aplicadas!</div>
+
+<nav>
+  <a class="nav-item" href="index.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    Início
+  </a>
+  <a class="nav-item" href="mapa.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="11" r="3"/><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 0 1-2.827 0l-4.244-4.243a8 8 0 1 1 11.314 0z"/></svg>
+    Mapa
+  </a>
+  <a class="nav-item" href="solicitacao.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>
+    Solicitar
+  </a>
+  <a class="nav-item" href="feedback.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    Avaliar
+  </a>
+  <a class="nav-item active" href="acessibilidade.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="2"/><path d="M12 9v7M9 21l3-5 3 5M8 12h8"/></svg>
+    Acesso
+  </a>
+  <a class="nav-item" href="sobre.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    Equipe
+  </a>
+</nav>
+
+<script src="assets/js/acessibilidade.js"></script>
+</body>
+</html>

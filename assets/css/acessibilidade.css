@@ -1,0 +1,97 @@
+/* ==========================================================================
+   InovaMove — Página Acessibilidade (acessibilidade.html)
+   ========================================================================== */
+
+/* ── Modo alto contraste ── */
+body.high-contrast {
+  --bg: #000000;
+  --white: #121212;
+  --text: #FFFF00;
+  --text-muted: #DDDDDD;
+  --border: #FFFF00;
+  --blue: #FFFF00;
+  --blue-light: #FFFF00;
+  --blue-pale: #222222;
+  --green: #00FF00;
+  --green-light: #00FF00;
+}
+body.high-contrast header { background: #000000; color: #FFFF00; border-bottom: 2px solid #FFFF00; }
+body.high-contrast .header-icon { background: #FFFF00; color: #000000; }
+body.high-contrast .save-btn { background: #FFFF00; color: #000000; font-weight: 900; }
+body.high-contrast .nav-item.active { color: #FFFF00; }
+body.high-contrast .nav-item.active svg path,
+body.high-contrast .nav-item.active svg circle,
+body.high-contrast .nav-item.active svg rect { stroke: #FFFF00; }
+body.high-contrast .toggle-switch .slider:before { background: #000000; }
+body.high-contrast .badge-futuro { background: #000; color: #FF0; border-color: #FF0; }
+body.high-contrast .toast { background: #FFFF00; color: #000; border: 2px solid #000; }
+
+body { transition: zoom 0.2s; }
+
+/* Espaço extra no rodapé para compensar o zoom de fonte grande */
+.main { padding: 16px 16px calc(250px + env(safe-area-inset-bottom)); }
+
+.page-title { font-size: 18px; font-weight: 900; color: var(--text); margin-bottom: 4px; }
+.page-sub { font-size: 13px; color: var(--text-muted); font-weight: 600; margin-bottom: 20px; }
+
+/* ── Seletor de perfil ── */
+.perfil-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+.perfil-card { background: var(--white); border-radius: 16px; padding: 14px; border: 2px solid var(--border); cursor: pointer; text-align: center; transition: all 0.2s; }
+.perfil-card.selected { border-color: var(--blue); background: var(--blue-pale); }
+.perfil-card .emoji { font-size: 28px; margin-bottom: 6px; }
+.perfil-card .nome { font-size: 12px; font-weight: 800; color: var(--text); }
+.perfil-card .desc { font-size: 10px; color: var(--text-muted); font-weight: 600; margin-top: 2px; }
+
+.section-title { display: flex; align-items: center; gap: 6px; }
+
+/* ── Cartão com interruptor (toggle) ── */
+.toggle-card { background: var(--white); border-radius: 14px; border: 1px solid var(--border); margin-bottom: 8px; overflow: hidden; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05); }
+.toggle-row { display: flex; align-items: center; gap: 14px; padding: 14px 16px; }
+.toggle-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.toggle-info { flex: 1; }
+.toggle-name { font-size: 13px; font-weight: 800; color: var(--text); }
+.toggle-desc { font-size: 11px; color: var(--text-muted); font-weight: 600; margin-top: 1px; }
+
+.toggle-switch { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
+.toggle-switch input { opacity: 0; width: 0; height: 0; }
+.slider { position: absolute; inset: 0; background: #d1d5db; border-radius: 24px; cursor: pointer; transition: 0.3s; }
+.slider:before { content: ""; position: absolute; height: 18px; width: 18px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: 0.3s; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); }
+input:checked + .slider { background: var(--blue); }
+input:checked + .slider:before { transform: translateX(20px); }
+
+/* ── Controle de tamanho de fonte ── */
+.slider-card { background: var(--white); border-radius: 14px; border: 1px solid var(--border); padding: 16px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05); }
+.slider-label { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.slider-label span { font-size: 13px; font-weight: 800; }
+.slider-label .val { background: var(--blue-pale); color: var(--blue); padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 800; }
+input[type=range] { width: 100%; accent-color: var(--blue); }
+
+/* ── Recursos futuros (desabilitados) ── */
+.future-card { opacity: 0.7; position: relative; }
+.future-card .slider { background: #e5e7eb !important; cursor: not-allowed; }
+.future-card .slider:before { transform: translateX(0) !important; }
+.badge-futuro { background: #FFF3E0; color: #E65100; font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 10px; border: 1px solid #FFE0B2; margin-left: 6px; display: inline-block; vertical-align: middle; }
+
+/* ── Botão salvar ── */
+.save-btn { width: 100%; padding: 15px; background: var(--blue); color: var(--white); border: none; border-radius: 14px; font-size: 15px; font-weight: 800; cursor: pointer; margin-top: 20px; font-family: 'Nunito', sans-serif; transition: opacity 0.2s; box-shadow: 0 4px 12px rgba(21, 101, 192, 0.3); }
+.save-btn:hover { opacity: 0.9; }
+
+/* ── Toast de confirmação ── */
+.toast {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--green);
+  color: white;
+  padding: 10px 24px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  opacity: 0;
+  transition: all 0.3s;
+  z-index: 999;
+  white-space: nowrap;
+  pointer-events: none; /* impede o toast de bloquear cliques */
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }

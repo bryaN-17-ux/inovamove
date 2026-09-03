@@ -1,0 +1,27 @@
+/* ==========================================================================
+   InovaMove — Variáveis globais (design tokens)
+   Cores, sombras e demais tokens usados em todas as páginas.
+   ========================================================================== */
+
+:root {
+  --blue: #1565C0;
+  --blue-light: #1976D2;
+  --blue-pale: #E3F2FD;
+
+  --green: #2E7D32;
+  --green-light: #4CAF50;
+
+  --orange: #E65100;
+  --orange-pale: #FFF3E0;
+
+  --yellow: #F9A825;
+
+  --text: #1a1a2e;
+  --text-muted: #6b7280;
+  --border: #e5e7eb;
+
+  --bg: #f8fafc;
+  --white: #ffffff;
+
+  --card-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}

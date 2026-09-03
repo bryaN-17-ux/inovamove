@@ -1,0 +1,48 @@
+/* ==========================================================================
+   InovaMove — Página Sobre / Equipe (sobre.html)
+   ========================================================================== */
+
+.main { padding-bottom: calc(120px + env(safe-area-inset-bottom)); }
+
+/* ── Hero ── */
+.hero { background: linear-gradient(135deg, var(--blue) 0%, #0D47A1 100%); padding: 28px 20px; color: white; text-align: center; position: relative; overflow: hidden; }
+.hero-logo { width: 80px; height: 80px; background: white; border-radius: 16px; padding: 4px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
+.hero-logo img { width: 100%; height: 100%; object-fit: contain; border-radius: 12px; }
+.hero-title { font-size: 22px; font-weight: 900; margin-bottom: 4px; }
+.hero-sub { font-size: 13px; opacity: 0.8; font-weight: 600; line-height: 1.5; max-width: 280px; margin: 0 auto; }
+.ods-row { display: flex; gap: 8px; justify-content: center; margin-top: 16px; flex-wrap: wrap; }
+.ods-badge { background: rgba(255, 255, 255, 0.18); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 20px; padding: 5px 12px; font-size: 11px; font-weight: 700; }
+
+/* ── Conteúdo ── */
+.content { padding: 16px; }
+.mission-card { background: white; border-radius: 16px; border: 1px solid var(--border); padding: 18px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05); }
+.mission-title { font-size: 14px; font-weight: 800; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+.mission-text { font-size: 13px; color: var(--text-muted); font-weight: 600; line-height: 1.7; }
+
+.problem-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-top: 1px solid var(--border); }
+.problem-item:first-of-type { border-top: none; padding-top: 0; }
+.problem-icon { font-size: 16px; margin-top: 1px; flex-shrink: 0; }
+.problem-text { font-size: 12px; font-weight: 600; color: var(--text); line-height: 1.5; }
+
+.sol-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+.sol-card { background: white; border-radius: 14px; border: 1px solid var(--border); padding: 14px; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05); }
+.sol-icon { font-size: 24px; margin-bottom: 8px; }
+.sol-title { font-size: 12px; font-weight: 800; color: var(--text); margin-bottom: 3px; }
+.sol-desc { font-size: 11px; color: var(--text-muted); font-weight: 600; line-height: 1.4; }
+
+.tech-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.tech-badge { background: var(--blue-pale); color: var(--blue); border-radius: 20px; padding: 6px 14px; font-size: 12px; font-weight: 800; border: 1px solid #BBDEFB; }
+
+.impact-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+.impact-item { background: white; border-radius: 14px; border: 1px solid var(--border); padding: 12px; text-align: center; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05); }
+.impact-num { font-size: 20px; font-weight: 900; color: var(--blue); }
+.impact-label { font-size: 10px; color: var(--text-muted); font-weight: 700; margin-top: 2px; line-height: 1.3; }
+
+.team-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+.team-card { background: white; border-radius: 14px; border: 1px solid var(--border); padding: 14px; text-align: center; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05); }
+.team-avatar { width: 42px; height: 42px; background: var(--blue-pale); color: var(--blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 900; margin: 0 auto 8px; }
+.team-name { font-size: 12px; font-weight: 800; color: var(--text); }
+
+.thanks-card { background: linear-gradient(135deg, var(--green) 0%, #1B5E20 100%); border-radius: 16px; padding: 20px; color: white; text-align: center; margin-bottom: 16px; }
+.thanks-card h3 { font-size: 16px; font-weight: 900; margin-bottom: 6px; }
+.thanks-card p { font-size: 12px; opacity: 0.85; font-weight: 600; line-height: 1.6; }
