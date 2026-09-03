@@ -1,0 +1,39 @@
+/* ==========================================================================
+   InovaMove — Página Avaliar (feedback.html)
+   ========================================================================== */
+
+.main { padding: 16px 16px calc(120px + env(safe-area-inset-bottom)); }
+
+.page-title { font-size: 18px; font-weight: 900; margin-bottom: 4px; }
+.page-sub { font-size: 13px; color: var(--text-muted); font-weight: 600; margin-bottom: 20px; }
+
+/* ── Resumo da última viagem ── */
+.ride-card { background: linear-gradient(135deg, var(--blue) 0%, #0D47A1 100%); border-radius: 20px; padding: 18px; color: white; margin-bottom: 20px; }
+.ride-label { font-size: 11px; opacity: 0.8; font-weight: 700; margin-bottom: 6px; }
+.ride-name { font-size: 17px; font-weight: 900; margin-bottom: 4px; }
+.ride-detail { font-size: 12px; opacity: 0.8; font-weight: 600; }
+.ride-stats { display: flex; gap: 16px; margin-top: 14px; }
+.ride-stat { background: rgba(255, 255, 255, 0.15); border-radius: 10px; padding: 8px 12px; font-size: 11px; font-weight: 700; }
+.ride-stat span { display: block; font-size: 16px; font-weight: 900; }
+
+/* ── Avaliação por estrelas ── */
+.rating-card { background: white; border-radius: 16px; border: 1px solid var(--border); padding: 16px; margin-bottom: 10px; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05); }
+.rating-label { font-size: 13px; font-weight: 800; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+.stars { display: flex; gap: 6px; }
+.star { font-size: 28px; cursor: pointer; transition: transform 0.15s; user-select: none; }
+.star:hover, .star.active { transform: scale(1.2); }
+.star.active { filter: drop-shadow(0 0 4px rgba(249, 168, 37, 0.5)); }
+
+/* ── Chips de pontos positivos/negativos ── */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.chip.good { border-color: var(--green-light); color: var(--green); }
+.chip.good.selected { background: var(--green-light); color: white; border-color: var(--green-light); }
+.chip.bad { border-color: #EF9A9A; color: #C62828; }
+.chip.bad.selected { background: #EF5350; color: white; border-color: #EF5350; }
+
+textarea { margin-top: 12px; }
+
+.send-btn { margin-top: 20px; }
+
+/* ── Detalhe do overlay de confirmação nesta página ── */
+.confirm-text { margin-bottom: 20px; }

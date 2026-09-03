@@ -1,0 +1,48 @@
+/* ==========================================================================
+   InovaMove — Página Solicitar Embarque (solicitacao.html)
+   ========================================================================== */
+
+.main { padding: 16px 16px calc(120px + env(safe-area-inset-bottom)); }
+
+.page-title { font-size: 18px; font-weight: 900; margin-bottom: 4px; }
+.page-sub { font-size: 13px; color: var(--text-muted); font-weight: 600; margin-bottom: 20px; }
+
+/* ── Cartão de status do ônibus ── */
+.status-card { background: white; border-radius: 16px; border: 1px solid var(--border); padding: 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 14px; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06); }
+.status-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--green-light); box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2); flex-shrink: 0; }
+.status-dot.orange { background: #FF9800; box-shadow: 0 0 0 3px rgba(255, 152, 0, 0.2); }
+.status-info { flex: 1; }
+.status-name { font-size: 13px; font-weight: 800; color: var(--text); }
+.status-detail { font-size: 11px; color: var(--text-muted); font-weight: 600; margin-top: 1px; }
+.status-time { font-size: 13px; font-weight: 900; color: var(--blue); }
+
+/* ── Chips de necessidade ── */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+.chip { padding: 8px 14px; }
+
+/* ── Seletor de linha ── */
+.linha-select {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1.5px solid var(--border);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  background: white;
+  font-family: 'Nunito', sans-serif;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+.linha-select:focus { outline: none; border-color: var(--blue); }
+
+textarea { margin-bottom: 16px; }
+
+.send-btn { display: flex; align-items: center; justify-content: center; gap: 8px; }
+
+/* ── Detalhe extra do overlay de confirmação nesta página ── */
+.confirm-detail { background: var(--blue-pale); border-radius: 12px; padding: 12px; margin-bottom: 20px; font-size: 13px; font-weight: 700; color: var(--blue); }
