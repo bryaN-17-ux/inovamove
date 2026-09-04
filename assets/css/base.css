@@ -120,6 +120,29 @@ header {
   font-family: 'Nunito', sans-serif;
 }
 
+/* ── Modo alto contraste (aplicado via JS em assets/js/accessibility.js,
+   funciona em qualquer página porque sobrescreve as variáveis globais) ── */
+body.high-contrast {
+  --bg: #000000;
+  --white: #121212;
+  --text: #FFFF00;
+  --text-muted: #DDDDDD;
+  --border: #FFFF00;
+  --blue: #FFFF00;
+  --blue-light: #FFFF00;
+  --blue-pale: #222222;
+  --green: #00FF00;
+  --green-light: #00FF00;
+}
+body.high-contrast header { background: #000000; color: #FFFF00; border-bottom: 2px solid #FFFF00; }
+body.high-contrast .header-icon { background: #FFFF00; color: #000000; }
+body.high-contrast .nav-item.active { color: #FFFF00; }
+body.high-contrast .nav-item.active svg path,
+body.high-contrast .nav-item.active svg circle,
+body.high-contrast .nav-item.active svg rect { stroke: #FFFF00; }
+
+body { transition: zoom 0.2s; }
+
 /* ── Navegação inferior (comum a todas as páginas) ── */
 nav {
   background: var(--white);

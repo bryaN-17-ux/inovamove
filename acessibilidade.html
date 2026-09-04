@@ -21,22 +21,22 @@
   <div class="page-sub">Selecione seu perfil para adaptar o app</div>
 
   <div class="perfil-grid">
-    <div class="perfil-card" onclick="selecionarPerfil(this, 'visual')">
+    <div class="perfil-card" data-perfil="visual" onclick="selecionarPerfil(this, 'visual')">
       <div class="emoji">👁️</div>
       <div class="nome">Deficiência Visual</div>
       <div class="desc">Leitor de tela e alto contraste</div>
     </div>
-    <div class="perfil-card" onclick="selecionarPerfil(this, 'auditiva')">
+    <div class="perfil-card" data-perfil="auditiva" onclick="selecionarPerfil(this, 'auditiva')">
       <div class="emoji">🦻</div>
       <div class="nome">Defic. Auditiva</div>
       <div class="desc">Alertas visuais e vibração</div>
     </div>
-    <div class="perfil-card" onclick="selecionarPerfil(this, 'fisica')">
+    <div class="perfil-card" data-perfil="fisica" onclick="selecionarPerfil(this, 'fisica')">
       <div class="emoji">🦽</div>
       <div class="nome">Defic. Física</div>
       <div class="desc">Foco em rampas (Futuro)</div>
     </div>
-    <div class="perfil-card" onclick="selecionarPerfil(this, 'idoso')">
+    <div class="perfil-card" data-perfil="idoso" onclick="selecionarPerfil(this, 'idoso')">
       <div class="emoji">👴</div>
       <div class="nome">Idoso</div>
       <div class="desc">Interface ampliada</div>
@@ -65,7 +65,7 @@
         <div class="toggle-name">Alto Contraste</div>
         <div class="toggle-desc">Melhora visibilidade para baixa visão</div>
       </div>
-      <label class="toggle-switch"><input type="checkbox" id="toggle-contraste" onchange="aplicarAltoContraste(this.checked)"><span class="slider"></span></label>
+      <label class="toggle-switch"><input type="checkbox" id="toggle-contraste" onchange="persistirConfiguracoes()"><span class="slider"></span></label>
     </div>
   </div>
 
@@ -76,7 +76,7 @@
         <div class="toggle-name">Leitor de Tela</div>
         <div class="toggle-desc">Toque nos textos para ouvir em voz alta</div>
       </div>
-      <label class="toggle-switch"><input type="checkbox" id="toggle-leitor"><span class="slider"></span></label>
+      <label class="toggle-switch"><input type="checkbox" id="toggle-leitor" onchange="persistirConfiguracoes()"><span class="slider"></span></label>
     </div>
   </div>
 
@@ -87,7 +87,7 @@
         <div class="toggle-name">Vibração nos Alertas</div>
         <div class="toggle-desc">Celular vibra ao interagir/salvar</div>
       </div>
-      <label class="toggle-switch"><input type="checkbox" id="toggle-vibra" checked onchange="testarVibracao(this.checked)"><span class="slider"></span></label>
+      <label class="toggle-switch"><input type="checkbox" id="toggle-vibra" checked onchange="testarVibracao(this.checked); persistirConfiguracoes()"><span class="slider"></span></label>
     </div>
   </div>
 
@@ -161,6 +161,7 @@
   </a>
 </nav>
 
+<script src="assets/js/accessibility.js"></script>
 <script src="assets/js/acessibilidade.js"></script>
 </body>
 </html>
