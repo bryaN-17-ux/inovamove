@@ -76,3 +76,13 @@ document.addEventListener('click', function (e) {
   const alvo = e.target.closest('.send-btn, .confirm-btn, .save-btn, .nav-item');
   if (alvo) navigator.vibrate(60);
 });
+
+// ── PWA: registra o service worker para o app poder ser instalado e
+//    abrir mais rápido / funcionar offline nas páginas já visitadas ──
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('sw.js').catch(function (erro) {
+      console.warn('Não foi possível registrar o service worker:', erro);
+    });
+  });
+}
