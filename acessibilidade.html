@@ -69,7 +69,7 @@
         <div class="toggle-name">Alto Contraste</div>
         <div class="toggle-desc">Melhora visibilidade para baixa visão</div>
       </div>
-      <label class="toggle-switch"><input type="checkbox" id="toggle-contraste" onchange="persistirConfiguracoes()"><span class="slider"></span></label>
+      <label class="toggle-switch"><input type="checkbox" id="toggle-contraste" onchange="aplicarPreview()"><span class="slider"></span></label>
     </div>
   </div>
 
@@ -80,7 +80,7 @@
         <div class="toggle-name">Leitor de Tela</div>
         <div class="toggle-desc">Toque nos textos para ouvir em voz alta</div>
       </div>
-      <label class="toggle-switch"><input type="checkbox" id="toggle-leitor" onchange="persistirConfiguracoes()"><span class="slider"></span></label>
+      <label class="toggle-switch"><input type="checkbox" id="toggle-leitor" onchange="aplicarPreview()"><span class="slider"></span></label>
     </div>
   </div>
 
@@ -91,7 +91,7 @@
         <div class="toggle-name">Vibração nos Alertas</div>
         <div class="toggle-desc">Celular vibra ao interagir/salvar</div>
       </div>
-      <label class="toggle-switch"><input type="checkbox" id="toggle-vibra" checked onchange="testarVibracao(this.checked); persistirConfiguracoes()"><span class="slider"></span></label>
+      <label class="toggle-switch"><input type="checkbox" id="toggle-vibra" checked onchange="testarVibracao(this.checked); aplicarPreview()"><span class="slider"></span></label>
     </div>
   </div>
 

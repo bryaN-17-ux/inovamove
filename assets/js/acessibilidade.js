@@ -1,15 +1,15 @@
 /* ==========================================================================
    InovaMove — Lógica da página Acessibilidade
-   Perfis pré-configurados, alto contraste, tamanho de fonte, vibração
-   e leitor de tela. Este arquivo só cuida da INTERFACE desta página;
-   quem guarda e aplica as preferências em todo o site é o
-   assets/js/accessibility.js (carregado antes deste, em toda página).
+   Mexer nos controles aqui só dá uma PRÉVIA visual nesta página (não é
+   gravado ainda). Só quando o usuário clica em "Salvar Configurações"
+   é que a preferência é gravada em localStorage e passa a valer nas
+   outras páginas do site (via assets/js/accessibility.js).
    ========================================================================== */
 
 let perfilAtual = null;
 
-// ── Grava o estado atual dos controles e aplica na hora ──
-function persistirConfiguracoes() {
+// ── Lê os controles da tela e aplica visualmente (SEM gravar) ──
+function aplicarPreview() {
   const config = {
     perfil: perfilAtual,
     contraste: document.getElementById('toggle-contraste').checked,
@@ -17,7 +17,6 @@ function persistirConfiguracoes() {
     vibra: document.getElementById('toggle-vibra').checked,
     fonte: Number(document.getElementById('slider-fonte').value)
   };
-  salvarConfigAcessibilidade(config);
   aplicarConfigAcessibilidade(config);
 }
 
@@ -46,39 +45,48 @@ function selecionarPerfil(el, tipo) {
   }
 
   updateFont(slider.value);
-  persistirConfiguracoes();
+  aplicarPreview();
 }
 
-// 2. TAMANHO DA FONTE (ZOOM)
+// 2. TAMANHO DA FONTE (ZOOM) — só prévia
 function updateFont(v) {
   const labels = ['Pequeno', 'Normal', 'Grande'];
   document.getElementById('font-val').textContent = labels[v - 1];
-  persistirConfiguracoes();
+  aplicarPreview();
 }
 
-// 3. VIBRAÇÃO (teste imediato ao ligar)
+// 3. VIBRAÇÃO (teste imediato ao ligar, não depende de salvar)
 function testarVibracao(ativo) {
   if (ativo && navigator.vibrate) {
     navigator.vibrate(200); // Vibra por 200ms
   }
 }
 
-// 4. SALVAR CONFIGURAÇÕES (grava e mostra confirmação)
+// 4. SALVAR CONFIGURAÇÕES — aqui sim grava de verdade e vale nas outras páginas
 function salvar() {
-  persistirConfiguracoes();
+  const config = {
+    perfil: perfilAtual,
+    contraste: document.getElementById('toggle-contraste').checked,
+    leitor: document.getElementById('toggle-leitor').checked,
+    vibra: document.getElementById('toggle-vibra').checked,
+    fonte: Number(document.getElementById('slider-fonte').value)
+  };
+
+  salvarConfigAcessibilidade(config);
+  aplicarConfigAcessibilidade(config);
 
   const t = document.getElementById('toast');
   t.classList.add('show');
 
-  const vibraAtivo = document.getElementById('toggle-vibra').checked;
-  if (vibraAtivo && navigator.vibrate) {
+  if (config.vibra && navigator.vibrate) {
     navigator.vibrate([100, 50, 100]); // Padrão de vibração de sucesso
   }
 
   setTimeout(() => t.classList.remove('show'), 3000);
 }
 
-// 5. Ao abrir a página, refletir nos controles o que já estava salvo
+// 5. Ao abrir a página, refletir nos controles o que já estava SALVO
+//    (não o que estava só em prévia — prévia não sobrevive a um recarregamento)
 document.addEventListener('DOMContentLoaded', function () {
   const config = getConfigAcessibilidade();
   perfilAtual = config.perfil;
@@ -95,6 +103,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const card = document.querySelector(`.perfil-card[data-perfil="${config.perfil}"]`);
     if (card) card.classList.add('selected');
   }
-  // Não chama aplicarConfigAcessibilidade aqui: o accessibility.js já
-  // aplica automaticamente assim que a página carrega.
+  // Não precisa chamar aplicarConfigAcessibilidade aqui: o accessibility.js
+  // já aplica a config salva automaticamente assim que a página carrega.
 });
