@@ -5,7 +5,7 @@
    visitadas. Não faz cache de dados externos (mapa, Overpass API).
    ========================================================================== */
 
-const CACHE_NAME = 'inovamove-v1';
+const CACHE_NAME = 'inovamove-v2';
 
 const ARQUIVOS_ESSENCIAIS = [
   'index.html',
@@ -51,7 +51,8 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// ── Serve do cache primeiro; se não tiver, busca na rede ──
+// ── Busca sempre na rede primeiro (garante que o app fique atualizado);
+//    só usa a cópia salva em cache se estiver sem internet ──
 self.addEventListener('fetch', (event) => {
   // Só intercepta pedidos do próprio site, não de APIs externas (mapa, Overpass)
   if (event.request.method !== 'GET' || !event.request.url.startsWith(self.location.origin)) {
@@ -59,6 +60,12 @@ self.addEventListener('fetch', (event) => {
   }
 
   event.respondWith(
-    caches.match(event.request).then((cacheado) => cacheado || fetch(event.request))
+    fetch(event.request)
+      .then((resposta) => {
+        const copia = resposta.clone();
+        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copia));
+        return resposta;
+      })
+      .catch(() => caches.match(event.request))
   );
 });
