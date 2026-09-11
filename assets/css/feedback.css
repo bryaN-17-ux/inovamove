@@ -17,7 +17,7 @@
 .ride-stat span { display: block; font-size: 16px; font-weight: 900; }
 
 /* ── Avaliação por estrelas ── */
-.rating-card { background: white; border-radius: 16px; border: 1px solid var(--border); padding: 16px; margin-bottom: 10px; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05); }
+.rating-card { background: var(--white); border-radius: 16px; border: 1px solid var(--border); padding: 16px; margin-bottom: 10px; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05); }
 .rating-label { font-size: 13px; font-weight: 800; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
 .stars { display: flex; gap: 6px; }
 .star { font-size: 28px; cursor: pointer; transition: transform 0.15s; user-select: none; }
@@ -30,6 +30,8 @@
 .chip.good.selected { background: var(--green-light); color: white; border-color: var(--green-light); }
 .chip.bad { border-color: #EF9A9A; color: #C62828; }
 .chip.bad.selected { background: #EF5350; color: white; border-color: #EF5350; }
+body.high-contrast .chip.bad { border-color: #FF5555; color: #FF5555; }
+body.high-contrast .chip.bad.selected { background: #FF5555; color: #000000; border-color: #FF5555; }
 
 textarea { margin-top: 12px; }
 

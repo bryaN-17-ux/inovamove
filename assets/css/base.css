@@ -90,7 +90,7 @@ header {
 .overlay.show { display: flex; }
 
 .confirm-card {
-  background: white;
+  background: var(--white);
   border-radius: 24px;
   padding: 28px;
   text-align: center;
@@ -141,6 +141,17 @@ body.high-contrast .nav-item.active svg path,
 body.high-contrast .nav-item.active svg circle,
 body.high-contrast .nav-item.active svg rect { stroke: #FFFF00; }
 
+/* Banners com gradiente (hero, cartão de viagem, agradecimentos):
+   em alto contraste viram fundo preto sólido com texto amarelo,
+   em vez de misturar a cor original fixa com a variável trocada */
+body.high-contrast .hero,
+body.high-contrast .ride-card,
+body.high-contrast .thanks-card {
+  background: #000000;
+  color: #FFFF00;
+  border: 2px solid #FFFF00;
+}
+
 body { transition: zoom 0.2s; }
 
 /* ── Navegação inferior (comum a todas as páginas) ── */
@@ -185,7 +196,7 @@ nav {
   font-size: 12px;
   font-weight: 700;
   color: var(--text-muted);
-  background: white;
+  background: var(--white);
   cursor: pointer;
   transition: all 0.2s;
   font-family: 'Nunito', sans-serif;
@@ -206,6 +217,7 @@ textarea {
   font-size: 13px;
   font-family: 'Nunito', sans-serif;
   color: var(--text);
+  background: var(--white);
   resize: none;
   height: 80px;
   box-shadow: var(--card-shadow);
