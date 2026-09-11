@@ -73,6 +73,8 @@
 .action-card.highlight { background: var(--blue); border-color: var(--blue); }
 .action-card.highlight .action-title,
 .action-card.highlight .action-desc { color: white; }
+body.high-contrast .action-card.highlight .action-title,
+body.high-contrast .action-card.highlight .action-desc { color: #000000; }
 
 /* ── Cartão de informações do sistema ── */
 .info-card { background: var(--white); border-radius: 16px; padding: 16px; border: 1px solid var(--border); margin: 16px 16px 0; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06); }

@@ -78,6 +78,7 @@ body { height: 100dvh; } /* acompanha viewport dinâmica em mobile */
   font-family: 'Nunito', sans-serif;
 }
 .tab.active { background: var(--blue); border-color: var(--blue); color: white; }
+body.high-contrast .tab.active { color: #000000; }
 
 .lines-list { overflow-y: auto; flex: 1; padding: 0 12px 8px; min-height: 0; }
 .lines-list::-webkit-scrollbar { width: 3px; }

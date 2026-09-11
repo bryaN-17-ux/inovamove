@@ -119,6 +119,7 @@ header {
   cursor: pointer;
   font-family: 'Nunito', sans-serif;
 }
+body.high-contrast .confirm-btn { color: #000000; }
 
 /* ── Modo alto contraste (aplicado via JS em assets/js/accessibility.js,
    funciona em qualquer página porque sobrescreve as variáveis globais) ── */
@@ -207,6 +208,7 @@ nav {
   border-color: var(--blue);
   color: white;
 }
+body.high-contrast .chip.selected { color: #000000; }
 
 /* ── Campos de texto padrão ── */
 textarea {
@@ -243,3 +245,4 @@ textarea:focus { outline: none; border-color: var(--blue); }
 
 .send-btn:hover { opacity: 0.9; transform: translateY(-1px); }
 .send-btn:disabled { background: #d1d5db; box-shadow: none; transform: none; cursor: not-allowed; }
+body.high-contrast .send-btn { color: #000000; }

@@ -28,6 +28,7 @@
 .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
 .chip.good { border-color: var(--green-light); color: var(--green); }
 .chip.good.selected { background: var(--green-light); color: white; border-color: var(--green-light); }
+body.high-contrast .chip.good.selected { color: #000000; }
 .chip.bad { border-color: #EF9A9A; color: #C62828; }
 .chip.bad.selected { background: #EF5350; color: white; border-color: #EF5350; }
 body.high-contrast .chip.bad { border-color: #FF5555; color: #FF5555; }
